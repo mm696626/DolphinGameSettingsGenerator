@@ -28,7 +28,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         pickGame = new JButton("Pick Game for INI");
         pickGame.addActionListener(this);
 
-        generateINI = new JButton("Generate Game Settings INI");
+        generateINI = new JButton("Pick Game Settings for INI");
         generateINI.addActionListener(this);
 
         setLayout(new GridBagLayout());
