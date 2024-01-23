@@ -42,34 +42,42 @@ public class GameSettingsSaver {
 
         if (coreSettings.length() > 0) {
             outputStream.println(coreSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (videoSettings.length() > 0) {
             outputStream.println(videoSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (videoEnhancementSettings.length() > 0) {
             outputStream.println(videoEnhancementSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (videoHacksSettings.length() > 0) {
             outputStream.println(videoHacksSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (videoHardwareSetting.length() > 0) {
             outputStream.println(videoHardwareSetting);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (dspAudioSetting.length() > 0) {
             outputStream.println(dspAudioSetting);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (wiiSettings.length() > 0) {
             outputStream.println(wiiSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         if (controlSettings.length() > 0) {
             outputStream.println(controlSettings);
+            outputStream.println("END OF SETTINGS BLOCK");
         }
 
         outputStream.close();
