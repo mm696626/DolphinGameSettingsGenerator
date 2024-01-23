@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import constants.*;
 import io.GameSettingINISaver;
@@ -65,6 +66,17 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             gameSettingINISaver.saveINI();
+            File tempFile = new File("settings.txt");
+            if (!tempFile.delete()) {
+                System.out.println("Temp Settings file could not be deleted!");
+            }
+
+            JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully generated!");
+            setVisible(false);
+            DolphinINIGeneratorUI dolphinINIGeneratorUI = new DolphinINIGeneratorUI();
+            dolphinINIGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            dolphinINIGeneratorUI.pack();
+            dolphinINIGeneratorUI.setVisible(true);
         }
     }
 
