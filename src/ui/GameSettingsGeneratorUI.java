@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import constants.*;
 import io.GameSettingINISaver;
+import io.GameSettingsSaver;
 
 public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
@@ -60,6 +61,8 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (checkIfButtonWasPressed(e)) {
+            GameSettingsSaver gameSettingsSaver = new GameSettingsSaver();
+            gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             gameSettingINISaver.saveINI();
         }
@@ -194,7 +197,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     private void addToDSPAudioPanel(JPanel dspAudioPanel) {
         dspAudioLabel = new JLabel(ConfigNames.dspAudioOption[0]);
         dspAudioPanel.add(dspAudioLabel);
-        dspAudioVolumeSlider = new JSlider(0, 100, 50);
+        dspAudioVolumeSlider = new JSlider(0, 100, 100);
         dspAudioVolumeSlider.setMajorTickSpacing(10);
         dspAudioVolumeSlider.setPaintTicks(true);
         dspAudioVolumeSlider.setPaintLabels(true);
