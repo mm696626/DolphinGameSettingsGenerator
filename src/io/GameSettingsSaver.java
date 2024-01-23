@@ -89,10 +89,10 @@ public class GameSettingsSaver {
         }
 
         else {
-            settings += "[Core]\n";
+            settings += "[" + settingsHeader + "]\n";
             for (int i=0; i<jComboBoxes.size(); i++) {
                 if (jComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.coreOptions[i] + "=" + jComboBoxes.get(i).getItemAt(jComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
+                    String settingValue = options[i] + "=" + jComboBoxes.get(i).getItemAt(jComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
                     settings += settingValue;
                 }
             }
@@ -115,7 +115,7 @@ public class GameSettingsSaver {
         else {
             videoHardwareSetting += "[Video_Hardware]\n";
             if (videoHardwareJComboBox.getSelectedIndex() != 0) {
-                String settingValue = ConfigNames.videoHacksOptions[0] + "=" + videoHardwareJComboBox.getItemAt(videoHardwareJComboBox.getSelectedIndex()).toString() + "\n";
+                String settingValue = ConfigNames.videoHardwareOption[0] + "=" + videoHardwareJComboBox.getItemAt(videoHardwareJComboBox.getSelectedIndex()).toString() + "\n";
                 videoHardwareSetting += settingValue;
             }
         }
