@@ -30,13 +30,13 @@ public class GameSettingsSaver {
             System.exit(0);
         }
 
-        String coreSettings = saveCoreSettings(coreJComboBoxes);
-        String videoSettings = saveVideoSettings(videoSettingsJComboBoxes);
-        String videoEnhancementSettings = saveVideoEnhancementSettings(videoEnhancementsJComboBoxes);
-        String videoHacksSettings = saveVideoHackSettings(videoHacksJComboBoxes);
+        String coreSettings = saveSettings(coreJComboBoxes,  "Core", ConfigNames.coreOptions);
+        String videoSettings = saveSettings(videoSettingsJComboBoxes, "Video_Settings", ConfigNames.videoSettingsOptions);
+        String videoEnhancementSettings = saveSettings(videoEnhancementsJComboBoxes, "Video_Enhancements",  ConfigNames.videoEnhancementsOptions);
+        String videoHacksSettings = saveSettings(videoHacksJComboBoxes, "Video_Hacks", ConfigNames.videoHacksOptions);
         String videoHardwareSetting = saveVideoHardwareSetting(videoHardwareJComboBox);
         String dspAudioSetting = saveDSPAudioSetting(dspAudioVolumeSlider);
-        String wiiSettings = saveWiiSettings(wiiJComboBoxes);
+        String wiiSettings = saveSettings(wiiJComboBoxes, "Wii", ConfigNames.wiiOptions);
         String controlSettings = saveControlSettings(controlJComboBoxes, controlJTextFields);
 
 
@@ -75,11 +75,11 @@ public class GameSettingsSaver {
         outputStream.close();
     }
 
-    private String saveCoreSettings(ArrayList<JComboBox> coreJComboBoxes) {
-        String coreSettings = "";
+    private String saveSettings(ArrayList<JComboBox> jComboBoxes, String settingsHeader, String[] options) {
+        String settings = "";
         boolean isChanged = false;
-        for (int i=0; i<coreJComboBoxes.size(); i++) {
-            if (coreJComboBoxes.get(i).getSelectedIndex() != 0) {
+        for (int i=0; i<jComboBoxes.size(); i++) {
+            if (jComboBoxes.get(i).getSelectedIndex() != 0) {
                 isChanged = true;
             }
         }
@@ -89,94 +89,16 @@ public class GameSettingsSaver {
         }
 
         else {
-            coreSettings += "[Core]\n";
-            for (int i=0; i<coreJComboBoxes.size(); i++) {
-                if (coreJComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.coreOptions[i] + "=" + coreJComboBoxes.get(i).getItemAt(coreJComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
-                    coreSettings += settingValue;
+            settings += "[Core]\n";
+            for (int i=0; i<jComboBoxes.size(); i++) {
+                if (jComboBoxes.get(i).getSelectedIndex() != 0) {
+                    String settingValue = ConfigNames.coreOptions[i] + "=" + jComboBoxes.get(i).getItemAt(jComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
+                    settings += settingValue;
                 }
             }
         }
 
-        return coreSettings;
-    }
-
-    private String saveVideoSettings(ArrayList<JComboBox> videoSettingsJComboBoxes) {
-        String videoSettings = "";
-        boolean isChanged = false;
-        for (int i=0; i<videoSettingsJComboBoxes.size(); i++) {
-            if (videoSettingsJComboBoxes.get(i).getSelectedIndex() != 0) {
-                isChanged = true;
-            }
-        }
-
-        if (!isChanged) {
-            return "";
-        }
-
-        else {
-            videoSettings += "[Video_Settings]\n";
-            for (int i=0; i<videoSettingsJComboBoxes.size(); i++) {
-                if (videoSettingsJComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.videoSettingsOptions[i] + "=" + videoSettingsJComboBoxes.get(i).getItemAt(videoSettingsJComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
-                    videoSettings += settingValue;
-                }
-            }
-        }
-
-        return videoSettings;
-    }
-
-    private String saveVideoEnhancementSettings(ArrayList<JComboBox> videoEnhancementsJComboBoxes) {
-        String videoEnhancementSettings = "";
-        boolean isChanged = false;
-        for (int i=0; i<videoEnhancementsJComboBoxes.size(); i++) {
-            if (videoEnhancementsJComboBoxes.get(i).getSelectedIndex() != 0) {
-                isChanged = true;
-            }
-        }
-
-        if (!isChanged) {
-            return "";
-        }
-
-        else {
-            videoEnhancementSettings += "[Video_Enhancements]\n";
-            for (int i=0; i<videoEnhancementsJComboBoxes.size(); i++) {
-                if (videoEnhancementsJComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.videoEnhancementsOptions[i] + "=" + videoEnhancementsJComboBoxes.get(i).getItemAt(videoEnhancementsJComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
-                    videoEnhancementSettings += settingValue;
-                }
-            }
-        }
-
-        return videoEnhancementSettings;
-    }
-
-    private String saveVideoHackSettings(ArrayList<JComboBox> videoHacksJComboBoxes) {
-        String videoHacksSettings = "";
-        boolean isChanged = false;
-        for (int i=0; i<videoHacksJComboBoxes.size(); i++) {
-            if (videoHacksJComboBoxes.get(i).getSelectedIndex() != 0) {
-                isChanged = true;
-            }
-        }
-
-        if (!isChanged) {
-            return "";
-        }
-
-        else {
-            videoHacksSettings += "[Video_Hacks]\n";
-            for (int i=0; i<videoHacksJComboBoxes.size(); i++) {
-                if (videoHacksJComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.videoHacksOptions[i] + "=" + videoHacksJComboBoxes.get(i).getItemAt(videoHacksJComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
-                    videoHacksSettings += settingValue;
-                }
-            }
-        }
-
-        return videoHacksSettings;
+        return settings;
     }
 
     private String saveVideoHardwareSetting(JComboBox videoHardwareJComboBox) {
@@ -219,32 +141,6 @@ public class GameSettingsSaver {
         }
 
         return dspAudioSetting;
-    }
-
-    private String saveWiiSettings(ArrayList<JComboBox> wiiJComboBoxes) {
-        String wiiSettings = "";
-        boolean isChanged = false;
-        for (int i=0; i<wiiJComboBoxes.size(); i++) {
-            if (wiiJComboBoxes.get(i).getSelectedIndex() != 0) {
-                isChanged = true;
-            }
-        }
-
-        if (!isChanged) {
-            return "";
-        }
-
-        else {
-            wiiSettings += "[Wii]\n";
-            for (int i=0; i<wiiJComboBoxes.size(); i++) {
-                if (wiiJComboBoxes.get(i).getSelectedIndex() != 0) {
-                    String settingValue = ConfigNames.wiiOptions[i] + "=" + wiiJComboBoxes.get(i).getItemAt(wiiJComboBoxes.get(i).getSelectedIndex()).toString() + "\n";
-                    wiiSettings += settingValue;
-                }
-            }
-        }
-
-        return wiiSettings;
     }
 
     private String saveControlSettings(ArrayList<JComboBox> controlJComboBoxes, ArrayList<JTextField> controlJTextFields) {
