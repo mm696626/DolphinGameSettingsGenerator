@@ -31,28 +31,46 @@ public class GameSettingsSaver {
         }
 
         String coreSettings = saveCoreSettings(coreJComboBoxes);
-        outputStream.println(coreSettings);
-
         String videoSettings = saveVideoSettings(videoSettingsJComboBoxes);
-        outputStream.println(videoSettings);
-
         String videoEnhancementSettings = saveVideoEnhancementSettings(videoEnhancementsJComboBoxes);
-        outputStream.println(videoEnhancementSettings);
-
         String videoHacksSettings = saveVideoHackSettings(videoHacksJComboBoxes);
-        outputStream.println(videoHacksSettings);
-
         String videoHardwareSetting = saveVideoHardwareSetting(videoHardwareJComboBox);
-        outputStream.println(videoHardwareSetting);
-
         String dspAudioSetting = saveDSPAudioSetting(dspAudioVolumeSlider);
-        outputStream.println(dspAudioSetting);
-
         String wiiSettings = saveWiiSettings(wiiJComboBoxes);
-        outputStream.println(wiiSettings);
-
         String controlSettings = saveControlSettings(controlJComboBoxes, controlJTextFields);
-        outputStream.println(controlSettings);
+
+
+        if (coreSettings.length() > 0) {
+            outputStream.println(coreSettings);
+        }
+
+        if (videoSettings.length() > 0) {
+            outputStream.println(videoSettings);
+        }
+
+        if (videoEnhancementSettings.length() > 0) {
+            outputStream.println(videoEnhancementSettings);
+        }
+
+        if (videoHacksSettings.length() > 0) {
+            outputStream.println(videoHacksSettings);
+        }
+
+        if (videoHardwareSetting.length() > 0) {
+            outputStream.println(videoHardwareSetting);
+        }
+
+        if (dspAudioSetting.length() > 0) {
+            outputStream.println(dspAudioSetting);
+        }
+
+        if (wiiSettings.length() > 0) {
+            outputStream.println(wiiSettings);
+        }
+
+        if (controlSettings.length() > 0) {
+            outputStream.println(controlSettings);
+        }
 
         outputStream.close();
     }
