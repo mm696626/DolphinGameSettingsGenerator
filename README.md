@@ -11,9 +11,10 @@
 * Press Pick Game for INI and then the tool will let you search for a game
 * Press Generate Game Settings INI and pick your options
 * Once you're done, then press Generate Game Settings INI to save your new settings file
-* Move that newly created file into your Dolphin install folder GameSettings folder
+* Move that newly created file into your Dolphin install folder's GameSettings folder
 * Enjoy having a convenient way to change individual game settings!
 
-### Note
+### Notes about this tool
+* This tool was built with the latest development version of Dolphin in mind
 * Dolphin does already have this feature to some extent
   * In my opinion, it's very limited and is a lot of manual text editing
