@@ -16,5 +16,3 @@
 
 ### Notes about this tool
 * This tool was built with the latest development version of Dolphin in mind
-* Dolphin does already have this feature to some extent
-  * In my opinion, it's very limited and is a lot of manual text editing
