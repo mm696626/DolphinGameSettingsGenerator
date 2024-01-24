@@ -175,15 +175,15 @@ public class GameSettingsSaver {
                     if (controlJComboBoxes.get(comboBoxesChecked).getSelectedIndex() != 0) {
                         String settingValue = ConfigNames.controlOptions[i] + "=" + controlJComboBoxes.get(comboBoxesChecked).getItemAt(controlJComboBoxes.get(comboBoxesChecked).getSelectedIndex()).toString() + "\n";
                         controlSettings += settingValue;
-                        comboBoxesChecked++;
                     }
+                    comboBoxesChecked++;
                 }
                 else {
                     if (controlJTextFields.get(textFieldsChecked).getText().trim().length() > 0) {
                         String settingValue = ConfigNames.controlOptions[i] + "=" + controlJTextFields.get(textFieldsChecked).getText().trim() + "\n";
                         controlSettings += settingValue;
-                        textFieldsChecked++;
                     }
+                    textFieldsChecked++;
                 }
 
             }
