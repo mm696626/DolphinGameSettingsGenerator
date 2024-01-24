@@ -303,9 +303,6 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         else if (videoEnhancementOption.equals("Force Texture Filtering")) {
             return ConfigOptions.textureFiltering;
         }
-        else if (videoEnhancementOption.equals("Output Resampling Mode")) {
-            return ConfigOptions.outputResampling;
-        }
         else {
             return ConfigOptions.trueFalseOptions;
         }

@@ -4,7 +4,7 @@ public class ConfigOptions {
 
     public static final String[] trueFalseOptions = {"Use Global Setting", "True", "False"};
     public static final String[] graphicBackends = {"Use Global Setting", "Direct3D 11", "Direct3D 12", "OpenGL", "Vulkan", "Metal", "Software", "Null (No Output)"};
-    public static final String[] cpuEmulatorEngine = {"Use Global Setting", "JIT x64", "JITIL", "JIT ARM64", "Cached Interpreter"};
+    public static final String[] cpuEmulatorEngine = {"Use Global Setting", "Interpreter", "JIT x64", "JITIL", "JIT ARM64", "Cached Interpreter"};
     public static final String[] emulationSpeeds = {"Use Global Setting", "Unlimited", "10%", "20%", "30%", "40%", "50%",
             "60%","70%", "80%","90%", "100%","110%", "120%","130%", "140%","150%", "160%","170%", "180%", "190%", "200%"};
     public static final String[] overClockSpeeds = {"Use Global Setting", "10%", "20%", "30%", "40%", "50%",
@@ -24,7 +24,6 @@ public class ConfigOptions {
     public static final String[] antiAliasingMethods = {"Use Global Setting", "MSAA", "SSAA"};
     public static final String[] anisotropicFiltering = {"Use Global Setting", "None", "2x","4x", "8x", "16x"};
     public static final String[] textureFiltering = {"Use Global Setting", "None", "Linear","Nearest"};
-    public static final String[] outputResampling = {"Use Global Setting", "Default", "Bilinear","BSpline", "Mitchell Netravali", "Catmull Rom", "Sharp Bilinear", "Area Sampling"};
     public static final String[] wiiLanguage = {"Use Global Setting", "Japanese", "English","German", "French"
             , "Spanish", "Italian", "Dutch", "Simplified Chinese", "Traditional Chinese", "Korean"};
 

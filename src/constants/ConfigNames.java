@@ -11,7 +11,7 @@ public class ConfigNames {
             ,"Fast Depth Calculation", "Per-Pixel Lighting", "Disable Fog", "Load Custom Textures", "Prefetch Custom Textures", "Crop to 4:3 or 16:9", "Cull Vertices on the CPU"};
 
     public static final String[] videoEnhancementsOptions = {"Anisotropic Filtering", "Force Texture Filtering", "Force 24-Bit Color"
-            ,"Disable Copy Filter", "Arbitrary Mipmap Detection", "Output Resampling Mode"};
+            ,"Disable Copy Filter", "Arbitrary Mipmap Detection"};
 
     public static final String[] videoHacksOptions = {"EFB Copies To Texture", "Scaled EFB Copy", "Skip EFB Access From CPU"
             ,"Ignore Format Changes", "Bounding Box", "Vertex Rounding", "XFB Copies to Texture", "Immediate XFB"
