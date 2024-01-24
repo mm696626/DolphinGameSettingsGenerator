@@ -35,7 +35,7 @@ public class GameSettingINISaver {
 
         for (int i=0; i<settingsBlocks.size(); i++) {
             String iniSettingsForSettingBlock = runAppropriateSettingBlock(settingsBlocks.get(i));
-            outputStream.println(iniSettingsForSettingBlock);
+            outputStream.print(iniSettingsForSettingBlock);
         }
         outputStream.close();
     }
