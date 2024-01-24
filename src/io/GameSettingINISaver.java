@@ -111,8 +111,15 @@ public class GameSettingINISaver {
         String[] settingsBlockSettings = settingsBlock.split("\n");
         String settingsBlockINI = "";
         for (int i=1; i<settingsBlockSettings.length; i++) {
-            String setting = getCorrespondingINISetting(settingsBlockSettings[i].split("=")[0], options, iniOptions);
-            String iniSettingValue = getCorrespondingINISettingValue(settingsBlockSettings[i].split("=")[0], settingsBlockSettings[i].split("=")[1]);
+
+            String settingName = settingsBlockSettings[i].split("=")[0];
+
+            if (settingName.equals("CPU Overclock")) {
+                settingsBlockINI += "OverclockEnable=True" + "\n";
+            }
+
+            String setting = getCorrespondingINISetting(settingName, options, iniOptions);
+            String iniSettingValue = getCorrespondingINISettingValue(settingName, settingsBlockSettings[i].split("=")[1]);
             settingsBlockINI += setting + "=" + iniSettingValue + "\n";
         }
 
