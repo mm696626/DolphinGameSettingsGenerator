@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -72,31 +71,31 @@ public class GameSettingINISaver {
         String settingBlockHeader = settingBlock.split("\n")[0];
 
         if (settingBlockHeader.equals("[Core]")) {
-            return getCoreSettingsBlockInINIForm(settingBlock);
+            return settingBlockHeader + "\n" + getCoreSettingsBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[Video_Settings]")) {
-            return getVideoSettingsBlockInINIForm(settingBlock);
+            return settingBlockHeader + "\n" + getVideoSettingsBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[Video_Enhancements]")) {
-            return "hello";
+            return settingBlockHeader + "\n" + getVideoEnhancementSettingsBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[Video_Hardware]")) {
-            return "hello";
+            return settingBlockHeader + "\n" + getVideoHardwareSettingBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[DSP]")) {
-            return "hello";
+            return settingBlockHeader + "\n" + getDSPAudioSettingBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[Wii]")) {
-            return "hello";
+            return settingBlockHeader + "\n" + getWiiSettingsBlockInINIForm(settingBlock);
         }
 
         else if (settingBlockHeader.equals("[Controls]")) {
-            return "hello";
+            return settingBlockHeader + "\n" + getControlSettingsBlockInINIForm(settingBlock);
         }
 
         else {
@@ -127,6 +126,66 @@ public class GameSettingINISaver {
         }
 
         return videoSettingsBlockINI;
+    }
+
+    private String getVideoEnhancementSettingsBlockInINIForm(String videoEnhancementSettingsBlock) {
+        String[] videoEnhancementSettings = videoEnhancementSettingsBlock.split("\n");
+        String videoEnhancementSettingsBlockINI = "";
+        for (int i=1; i<videoEnhancementSettings.length; i++) {
+            String videoEnhancementSetting = getCorrespondingINISetting(videoEnhancementSettings[i].split("=")[0], ConfigNames.videoEnhancementsOptions, INIConfigNames.INIVideoEnhancementsOptions);
+            String videoEnhancementSettingValue = getCorrespondingVideoEnhancementINISettingValue(videoEnhancementSettings[i].split("=")[0], videoEnhancementSettings[i].split("=")[1]);
+            videoEnhancementSettingsBlockINI += videoEnhancementSetting + "=" + videoEnhancementSettingValue + "\n";
+        }
+
+        return videoEnhancementSettingsBlockINI;
+    }
+
+    private String getVideoHardwareSettingBlockInINIForm(String videoHardwareSettingBlock) {
+        String[] videoEnhancementSettings = videoHardwareSettingBlock.split("\n");
+        String videoEnhancementSettingsBlockINI = "";
+        for (int i=1; i<videoEnhancementSettings.length; i++) {
+            String videoEnhancementSetting = getCorrespondingINISetting(videoEnhancementSettings[i].split("=")[0], ConfigNames.videoHardwareOption, INIConfigNames.INIVideoHardwareOption);
+            String videoEnhancementSettingValue = videoEnhancementSettings[i].split("=")[1];
+            videoEnhancementSettingsBlockINI += videoEnhancementSetting + "=" + videoEnhancementSettingValue + "\n";
+        }
+
+        return videoEnhancementSettingsBlockINI;
+    }
+
+    private String getDSPAudioSettingBlockInINIForm(String dspAudioSettingBlock) {
+        String[] dspAudioSettings = dspAudioSettingBlock.split("\n");
+        String dspAudioSettingsBlockINI = "";
+        for (int i=1; i<dspAudioSettings.length; i++) {
+            String dspAudioSetting = getCorrespondingINISetting(dspAudioSettings[i].split("=")[0], ConfigNames.dspAudioOption, INIConfigNames.INIDspAudioOption);
+            String dspAudioSettingValue = dspAudioSettings[i].split("=")[1];
+            dspAudioSettingsBlockINI += dspAudioSetting + "=" + dspAudioSettingValue + "\n";
+        }
+
+        return dspAudioSettingsBlockINI;
+    }
+
+    private String getWiiSettingsBlockInINIForm(String wiiSettingsBlock) {
+        String[] wiiSettings = wiiSettingsBlock.split("\n");
+        String wiiSettingsBlockINI = "";
+        for (int i=1; i<wiiSettings.length; i++) {
+            String wiiSetting = getCorrespondingINISetting(wiiSettings[i].split("=")[0], ConfigNames.wiiOptions, INIConfigNames.INIWiiOptions);
+            String wiiSettingValue = getCorrespondingWiiINISettingValue(wiiSettings[i].split("=")[0], wiiSettings[i].split("=")[1]);
+            wiiSettingsBlockINI += wiiSetting + "=" + wiiSettingValue + "\n";
+        }
+
+        return wiiSettingsBlockINI;
+    }
+
+    private String getControlSettingsBlockInINIForm(String controlSettingsBlock) {
+        String[] controlSettings = controlSettingsBlock.split("\n");
+        String controlSettingsBlockINI = "";
+        for (int i=1; i<controlSettings.length; i++) {
+            String wiiSetting = getCorrespondingINISetting(controlSettings[i].split("=")[0], ConfigNames.controlOptions, INIConfigNames.INIControlOptions);
+            String wiiSettingValue = getCorrespondingControlINISettingValue(controlSettings[i].split("=")[0], controlSettings[i].split("=")[1]);
+            controlSettingsBlockINI += wiiSetting + "=" + wiiSettingValue + "\n";
+        }
+
+        return controlSettingsBlockINI;
     }
 
     private String getCorrespondingINISetting(String coreSetting, String[] optionNames, String[] iniOptions) {
@@ -298,5 +357,104 @@ public class GameSettingINISaver {
 
 
         return videoSettingValue;
+    }
+
+    private String getCorrespondingVideoEnhancementINISettingValue(String videoEnhancementSetting, String videoEnhancementSettingValue) {
+
+        int index = 0;
+
+        if (videoEnhancementSetting.equals("Anisotropic Filtering")) {
+
+            for (int i=0; i<ConfigOptions.anisotropicFiltering.length; i++)  {
+                if (videoEnhancementSettingValue.equals(ConfigOptions.anisotropicFiltering[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            videoEnhancementSettingValue = INIConfigOptions.anisotropicFiltering[index];
+        }
+
+        else if (videoEnhancementSetting.equals("Force Texture Filtering")) {
+            for (int i=0; i<ConfigOptions.textureFiltering.length; i++)  {
+                if (videoEnhancementSettingValue.equals(ConfigOptions.textureFiltering[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            videoEnhancementSettingValue = INIConfigOptions.textureFiltering[index];
+        }
+
+
+        return videoEnhancementSettingValue;
+    }
+
+    private String getCorrespondingWiiINISettingValue(String wiiSetting, String wiiSettingValue) {
+
+        int index = 0;
+
+        if (wiiSetting.equals("Wii Language")) {
+
+            for (int i=0; i<ConfigOptions.wiiLanguage.length; i++)  {
+                if (wiiSettingValue.equals(ConfigOptions.wiiLanguage[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            wiiSettingValue = INIConfigOptions.wiiLanguage[index];
+        }
+
+        else if (wiiSetting.equals("Wii Aspect Ratio")) {
+            for (int i=0; i<ConfigOptions.wiiAspectRatio.length; i++)  {
+                if (wiiSettingValue.equals(ConfigOptions.wiiAspectRatio[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            wiiSettingValue = INIConfigOptions.wiiAspectRatio[index];
+        }
+
+
+        return wiiSettingValue;
+    }
+
+    private String getCorrespondingControlINISettingValue(String controlSetting, String controlSettingValue) {
+
+        int index = 0;
+
+        if (controlSetting.equals("GameCube Controller Port 1")
+            || controlSetting.equals("GameCube Controller Port 2")
+            || controlSetting.equals("GameCube Controller Port 3")
+            || controlSetting.equals("GameCube Controller Port 4")) {
+
+            for (int i=0; i<ConfigOptions.gameCubeControllerTypes.length; i++)  {
+                if (controlSettingValue.equals(ConfigOptions.gameCubeControllerTypes[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            controlSettingValue = INIConfigOptions.gameCubeControllerTypes[index];
+        }
+
+        else if (controlSetting.equals("Wii Remote 1")
+                || controlSetting.equals("Wii Remote 2")
+                || controlSetting.equals("Wii Remote 3")
+                || controlSetting.equals("Wii Remote 4")) {
+            for (int i=0; i<ConfigOptions.wiiControllerTypes.length; i++)  {
+                if (controlSettingValue.equals(ConfigOptions.wiiControllerTypes[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            controlSettingValue = INIConfigOptions.wiiControllerTypes[index];
+        }
+
+
+        return controlSettingValue;
     }
 }

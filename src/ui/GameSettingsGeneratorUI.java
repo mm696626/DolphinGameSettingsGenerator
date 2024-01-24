@@ -67,6 +67,10 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             gameSettingINISaver.saveINI();
 
+            File tempSettingsFile = new File("settings.txt");
+            if (!tempSettingsFile.delete()) {
+                System.out.println("Temp Settings File was not deleted");
+            }
             JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully generated!");
             setVisible(false);
             DolphinINIGeneratorUI dolphinINIGeneratorUI = new DolphinINIGeneratorUI();
