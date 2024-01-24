@@ -82,6 +82,10 @@ public class GameSettingINISaver {
             return settingBlockHeader + "\n" + getVideoEnhancementSettingsBlockInINIForm(settingBlock);
         }
 
+        else if (settingBlockHeader.equals("[Video_Hacks]")) {
+            return settingBlockHeader + "\n" + getVideoHackSettingsBlockInINIForm(settingBlock);
+        }
+
         else if (settingBlockHeader.equals("[Video_Hardware]")) {
             return settingBlockHeader + "\n" + getVideoHardwareSettingBlockInINIForm(settingBlock);
         }
@@ -135,6 +139,18 @@ public class GameSettingINISaver {
             String videoEnhancementSetting = getCorrespondingINISetting(videoEnhancementSettings[i].split("=")[0], ConfigNames.videoEnhancementsOptions, INIConfigNames.INIVideoEnhancementsOptions);
             String videoEnhancementSettingValue = getCorrespondingVideoEnhancementINISettingValue(videoEnhancementSettings[i].split("=")[0], videoEnhancementSettings[i].split("=")[1]);
             videoEnhancementSettingsBlockINI += videoEnhancementSetting + "=" + videoEnhancementSettingValue + "\n";
+        }
+
+        return videoEnhancementSettingsBlockINI;
+    }
+
+    private String getVideoHackSettingsBlockInINIForm(String videoHackSettingsBlock) {
+        String[] videoHackSettings = videoHackSettingsBlock.split("\n");
+        String videoEnhancementSettingsBlockINI = "";
+        for (int i=1; i<videoHackSettings.length; i++) {
+            String videoHackSetting = getCorrespondingINISetting(videoHackSettings[i].split("=")[0], ConfigNames.videoHacksOptions, INIConfigNames.INIVideoHacksOptions);
+            String videoHackSettingValue = getCorrespondingVideoHackINISettingValue(videoHackSettings[i].split("=")[0], videoHackSettings[i].split("=")[1]);
+            videoEnhancementSettingsBlockINI += videoHackSetting + "=" + videoHackSettingValue + "\n";
         }
 
         return videoEnhancementSettingsBlockINI;
@@ -388,6 +404,28 @@ public class GameSettingINISaver {
 
 
         return videoEnhancementSettingValue;
+    }
+
+    private String getCorrespondingVideoHackINISettingValue(String videoHackSetting, String videoHackSettingValue) {
+
+        int index = 0;
+
+        if (videoHackSetting.equals("Skip EFB Access From CPU")
+            || videoHackSetting.equals("Ignore Format Changes")
+            || videoHackSetting.equals("Manual Texture Sampling")) {
+
+            for (int i=0; i<ConfigOptions.trueFalseOptions.length; i++)  {
+                if (videoHackSettingValue.equals(ConfigOptions.trueFalseOptions[i])) {
+                    index = i;
+                    break;
+                }
+            }
+
+            videoHackSettingValue = INIConfigOptions.inverseTrueFalseOptions[index];
+        }
+
+
+        return videoHackSettingValue;
     }
 
     private String getCorrespondingWiiINISettingValue(String wiiSetting, String wiiSettingValue) {

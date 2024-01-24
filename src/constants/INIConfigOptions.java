@@ -3,6 +3,7 @@ package constants;
 public class INIConfigOptions {
 
     public static final String[] trueFalseOptions = {"Use Global Setting", "True", "False"};
+    public static final String[] inverseTrueFalseOptions = {"Use Global Setting", "False", "True"};
     public static final String[] graphicBackends = {"Use Global Setting", "D3D", "D3D12", "OGL", "Vulkan", "Metal", "Software Renderer", "Null"};
     public static final String[] cpuEmulatorEngine = {"Use Global Setting", "0", "1", "2", "4", "5"};
     public static final String[] emulationSpeeds = {"Use Global Setting", "0.00", "0.10", "0.20", "0.30", "0.40", "0.50",
