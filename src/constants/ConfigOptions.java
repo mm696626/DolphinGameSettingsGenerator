@@ -19,7 +19,7 @@ public class ConfigOptions {
 
     public static final String[] shaderCompilationMethods = {"Use Global Setting", "Specialized (Default)", "Exclusive Ubershaders", "Hybrid Ubershaders", "Skip Drawing"};
     public static final String[] textureCacheAccuracies = {"Use Global Setting", "Safe", "Middle", "Fast"};
-    public static final String[] aspectRatios = {"Use Global Setting", "4:3", "16:9", "Stretch"};
+    public static final String[] aspectRatios = {"Use Global Setting", "16:9", "4:3", "Stretch"};
     public static final String[] antiAliasing = {"Use Global Setting", "None", "2x","4x", "8x"};
     public static final String[] antiAliasingMethods = {"Use Global Setting", "MSAA", "SSAA"};
     public static final String[] anisotropicFiltering = {"Use Global Setting", "None", "2x","4x", "8x", "16x"};
