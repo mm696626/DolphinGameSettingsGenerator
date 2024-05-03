@@ -85,6 +85,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == moveGameSettingsToUserFolder) {
+            JOptionPane.showMessageDialog(this, "Please select the location of your Dolphin User Folder!");
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int response = fileChooser.showOpenDialog(null);
