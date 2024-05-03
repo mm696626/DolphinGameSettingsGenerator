@@ -62,12 +62,13 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (checkIfButtonWasPressed(e)) {
+            File tempSettingsFile = new File("settings.txt");
+
             GameSettingsSaver gameSettingsSaver = new GameSettingsSaver();
             gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
-            gameSettingINISaver.saveINI();
+            gameSettingINISaver.saveINI(tempSettingsFile);
 
-            File tempSettingsFile = new File("settings.txt");
             if (!tempSettingsFile.delete()) {
                 System.out.println("Temp Settings File was not deleted");
             }

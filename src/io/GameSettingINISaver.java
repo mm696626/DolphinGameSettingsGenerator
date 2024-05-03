@@ -4,6 +4,7 @@ import constants.ConfigNames;
 import constants.DifferingINIConfigOptions;
 import constants.INIConfigNames;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,11 +21,22 @@ public class GameSettingINISaver {
         this.gameID = gameID;
     }
 
-    public void saveINI() {
+    public void saveINI(File tempSettingsFile) {
         PrintWriter outputStream = null;
 
+        //pass in temp settings file to use file path to save to folder
+        String settingsFilePath = tempSettingsFile.getAbsolutePath();
+        int fileNameIndex = settingsFilePath.lastIndexOf("settings.txt");
+        String filePathSeparator = settingsFilePath.substring(fileNameIndex-1, fileNameIndex);
+        String settingsFilePathFolder = settingsFilePath.substring(0, settingsFilePath.lastIndexOf(filePathSeparator));
+
+        File gameSettingsFolder = new File(settingsFilePathFolder + filePathSeparator + "GameSettings");
+        if (!gameSettingsFolder.exists()) {
+            gameSettingsFolder.mkdirs();
+        }
+
         try {
-            outputStream = new PrintWriter( new FileOutputStream(gameID + ".ini"));
+            outputStream = new PrintWriter(new FileOutputStream(settingsFilePathFolder + filePathSeparator + "GameSettings" + filePathSeparator + gameID + ".ini"));
         }
         catch (FileNotFoundException f) {
             System.out.println("File does not exist");
