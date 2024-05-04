@@ -2,6 +2,7 @@ package ui;
 
 import io.GameIDLoader;
 import io.GameSettingsMover;
+import validation.UserFolderValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,9 +95,15 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
                 GameSettingsMover gameSettingsMover = new GameSettingsMover();
                 try {
                     int copyFilesDialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to move the Game Settings files to the folder " + userFolderPath + "?");
-                    if (copyFilesDialogResult == JOptionPane.YES_OPTION){
-                        gameSettingsMover.moveGameSettings(userFolderPath);
-                        JOptionPane.showMessageDialog(this, "Game Settings have been moved to User Folder!");
+                    if (copyFilesDialogResult == JOptionPane.YES_OPTION) {
+                        UserFolderValidator userFolderValidator = new UserFolderValidator();
+                        if (userFolderValidator.isValidUserFolder(userFolderPath)) {
+                            gameSettingsMover.moveGameSettings(userFolderPath);
+                            JOptionPane.showMessageDialog(this, "Game Settings have been moved to User Folder!");
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(this, "This isn't a valid User Folder!");
+                        }
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
