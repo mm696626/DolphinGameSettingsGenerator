@@ -14,7 +14,7 @@ import java.io.IOException;
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
-    private JButton pickGame, generateINI, moveGameSettingsToUserFolder;
+    private JButton pickGame, generateINI, editINI, moveGameSettingsToUserFolder;
     private String gameID = "";
     private String userFolderPath = "";
     GridBagConstraints gridBagConstraints = null;
@@ -35,6 +35,9 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         generateINI = new JButton("Pick Game Settings for INI");
         generateINI.addActionListener(this);
 
+        editINI = new JButton("Edit Generated INI");
+        editINI.addActionListener(this);
+
         moveGameSettingsToUserFolder = new JButton("Move Game Settings to Dolphin User Folder");
         moveGameSettingsToUserFolder.addActionListener(this);
 
@@ -51,6 +54,10 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         add(generateINI, gridBagConstraints);
 
         gridBagConstraints.gridx=2;
+        gridBagConstraints.gridy=0;
+        add(editINI, gridBagConstraints);
+
+        gridBagConstraints.gridx=3;
         gridBagConstraints.gridy=0;
         add(moveGameSettingsToUserFolder, gridBagConstraints);
     }
@@ -83,6 +90,13 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
             else {
                 JOptionPane.showMessageDialog(this, "No game has been chosen!");
             }
+        }
+
+        if (e.getSource() == editINI) {
+            INIEditorUI iniEditorUI = new INIEditorUI();
+            iniEditorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            iniEditorUI.pack();
+            iniEditorUI.setVisible(true);
         }
 
         if (e.getSource() == moveGameSettingsToUserFolder) {
