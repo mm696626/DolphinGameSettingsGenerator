@@ -18,6 +18,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
 
     private String gameID;
+    private String iniFilePath;
     private boolean isEditing = false;
 
     private ArrayList<JPanel> jPanels = new ArrayList<>();
@@ -49,10 +50,11 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
 
 
-    public GameSettingsGeneratorUI(String gameID, boolean isEditing)
+    public GameSettingsGeneratorUI(String gameID, boolean isEditing, String iniFilePath)
     {
         this.gameID = gameID;
         this.isEditing = isEditing;
+        this.iniFilePath = iniFilePath;
 
         setTitle("Game Settings INI Generator");
         generateUI();
@@ -78,7 +80,11 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             GameSettingsSaver gameSettingsSaver = new GameSettingsSaver();
             gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
-            gameSettingINISaver.saveINI(tempSettingsFile);
+            try {
+                gameSettingINISaver.saveINI(tempSettingsFile, iniFilePath);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
 
             if (!tempSettingsFile.delete()) {
                 System.out.println("Temp Settings File was not deleted");
@@ -374,7 +380,16 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         String wiiTDBFilePathFolder = wiiTDBFilePath.substring(0, wiiTDBFilePath.lastIndexOf(filePathSeparator));
 
         File chosenINIFile = new File(wiiTDBFilePathFolder + filePathSeparator + "GameSettings" + filePathSeparator + gameID + ".ini");
-        ArrayList<String> iniLines = readINILines(chosenINIFile);
+
+        ArrayList<String> iniLines;
+
+        if (gameID != null) {
+            iniLines = readINILines(chosenINIFile);
+        }
+        else {
+            iniLines = readINILines(new File(iniFilePath));
+        }
+
         ArrayList<String> iniSettings = getINISettings(iniLines);
         ArrayList<String> iniSettingValues = getINIValues(iniLines);
         ArrayList<String> translatedINISettings = translateINISettings(iniSettings);
@@ -388,7 +403,6 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     }
 
     private void setAppropriateUIElement(String translatedINISetting, String settingValue) {
-
 
         for (int i=0; i<coreJLabels.size(); i++) {
             setUIElement(coreJLabels, coreJComboBoxes, translatedINISetting, settingValue, i);
@@ -426,7 +440,10 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
         int comboBoxIndex = 0;
         int textFieldIndex = 0;
+        setControlsUIElements(translatedINISetting, settingValue, comboBoxIndex, textFieldIndex);
+    }
 
+    private void setControlsUIElements(String translatedINISetting, String settingValue, int comboBoxIndex, int textFieldIndex) {
         for (int i=0; i<controlJLabels.size(); i++) {
 
             if (translatedINISetting.equals(controlJLabels.get(i).getText())) {

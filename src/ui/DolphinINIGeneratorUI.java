@@ -81,7 +81,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
                 GameIDLoader gameIDLoader = new GameIDLoader();
                 gameID = gameIDLoader.getGameIDFromChosenGameIDFile();
 
-                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, false);
+                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, false, null);
                 gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameSettingsGeneratorUI.pack();
                 gameSettingsGeneratorUI.setVisible(true);
@@ -93,10 +93,10 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == editINI) {
-            INIEditorUI iniEditorUI = new INIEditorUI();
-            iniEditorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-            iniEditorUI.pack();
-            iniEditorUI.setVisible(true);
+            GameSettingsEditorUI gameSettingsEditorUI = new GameSettingsEditorUI();
+            gameSettingsEditorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            gameSettingsEditorUI.pack();
+            gameSettingsEditorUI.setVisible(true);
         }
 
         if (e.getSource() == moveGameSettingsToUserFolder) {

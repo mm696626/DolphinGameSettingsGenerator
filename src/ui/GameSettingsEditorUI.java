@@ -1,6 +1,5 @@
 package ui;
 
-import constants.ConfigNames;
 import validation.ExtensionValidator;
 
 import javax.swing.*;
@@ -10,12 +9,16 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-public class INIEditorUI extends JFrame implements ActionListener {
+public class GameSettingsEditorUI extends JFrame implements ActionListener {
 
     private ArrayList<File> gameSettingsFiles;
     private JButton[] gameSettingsButtons;
+    private JButton pickOtherGameSettingsFile;
+    private String iniFilePath;
     private String[] gameIDs;
-    public INIEditorUI() {
+    private Container container;
+
+    public GameSettingsEditorUI() {
         setTitle("Game Setting Editor");
 
         //use WiiTDB file to get folder path
@@ -27,11 +30,16 @@ public class INIEditorUI extends JFrame implements ActionListener {
 
         File gameSettingsFolder = new File(wiiTDBFilePathFolder + filePathSeparator + "GameSettings");
 
-        if (!gameSettingsFolder.exists()) {
-            gameSettingsFolder.mkdirs();
+
+        if (gameSettingsFolder.exists()) {
+            gameSettingsFiles = getGameSettingFileList(gameSettingsFolder.getAbsolutePath());
+        }
+        else {
+            gameSettingsFiles = new ArrayList<>();
         }
 
-        gameSettingsFiles = getGameSettingFileList(gameSettingsFolder.getAbsolutePath());
+        this.container = getContentPane();
+        container.setLayout(new BorderLayout());
         generateUI();
     }
     @Override
@@ -39,13 +47,32 @@ public class INIEditorUI extends JFrame implements ActionListener {
         if (checkIfIDButtonWasPressed(e)) {
             setVisible(false);
         }
+
+        if (e.getSource() == pickOtherGameSettingsFile) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int response = fileChooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                iniFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                ExtensionValidator extensionValidator = new ExtensionValidator();
+                if (extensionValidator.isExtensionValid(iniFilePath)) {
+                    GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(null, true, iniFilePath);
+                    gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    gameSettingsGeneratorUI.pack();
+                    gameSettingsGeneratorUI.setVisible(true);
+                    setVisible(false);
+                }
+            } else {
+                return;
+            }
+        }
     }
 
     private boolean checkIfIDButtonWasPressed(ActionEvent e) {
         for (int i=0; i<gameSettingsButtons.length; i++) {
             if (e.getSource() == gameSettingsButtons[i]) {
                 String gameID = gameIDs[i];
-                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, true);
+                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, true, null);
                 gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameSettingsGeneratorUI.pack();
                 gameSettingsGeneratorUI.setVisible(true);
@@ -81,7 +108,8 @@ public class INIEditorUI extends JFrame implements ActionListener {
         JPanel jPanel = new JPanel();
 
         int buttonsPerRow = 3;
-        GridLayout gridLayout = new GridLayout((gameSettingsFiles.size()/buttonsPerRow), buttonsPerRow);
+
+        GridLayout gridLayout = new GridLayout((gameSettingsFiles.size()/buttonsPerRow)+1, buttonsPerRow);
         jPanel.setLayout(gridLayout);
 
         gameSettingsButtons = new JButton[gameSettingsFiles.size()];
@@ -106,6 +134,13 @@ public class INIEditorUI extends JFrame implements ActionListener {
             jPanel.add(gameSettingsButtons[i]);
         }
 
+        pickOtherGameSettingsFile = new JButton("Choose Other Game Settings File");
+        pickOtherGameSettingsFile.addActionListener(this);
+        jPanel.add(pickOtherGameSettingsFile);
+
+        //add scroll bar just in case
+        JScrollPane jScrollPane = new JScrollPane(jPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        container.add(jScrollPane);
         add(jPanel);
     }
 
@@ -118,7 +153,6 @@ public class INIEditorUI extends JFrame implements ActionListener {
         String wiiTDBFilePathFolder = wiiTDBFilePath.substring(0, wiiTDBFilePath.lastIndexOf(filePathSeparator));
         File coversFolder = new File(wiiTDBFilePathFolder + filePathSeparator + "covers");
 
-        File[] covers = coversFolder.listFiles();
         gameID = gameID.substring(0, gameID.lastIndexOf("."));
 
         File image = new File(coversFolder + filePathSeparator + gameID + ".png");

@@ -15,9 +15,6 @@ public class SearchResultsUI extends JFrame implements ActionListener {
 
     private Container container;
 
-    GridBagConstraints gridBagConstraints = null;
-
-
     public SearchResultsUI(ArrayList<String> searchResults) {
 
         this.searchResults = searchResults;
