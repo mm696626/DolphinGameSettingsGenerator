@@ -81,7 +81,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
                 GameIDLoader gameIDLoader = new GameIDLoader();
                 gameID = gameIDLoader.getGameIDFromChosenGameIDFile();
 
-                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID);
+                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, false);
                 gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameSettingsGeneratorUI.pack();
                 gameSettingsGeneratorUI.setVisible(true);

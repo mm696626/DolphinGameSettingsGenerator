@@ -45,7 +45,7 @@ public class INIEditorUI extends JFrame implements ActionListener {
         for (int i=0; i<gameSettingsButtons.length; i++) {
             if (e.getSource() == gameSettingsButtons[i]) {
                 String gameID = gameIDs[i];
-                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID);
+                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, true);
                 gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gameSettingsGeneratorUI.pack();
                 gameSettingsGeneratorUI.setVisible(true);

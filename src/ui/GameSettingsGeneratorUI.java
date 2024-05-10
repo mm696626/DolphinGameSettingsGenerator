@@ -5,7 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import constants.*;
 import io.GameSettingINISaver;
 import io.GameSettingsSaver;
@@ -14,6 +18,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
 
     private String gameID;
+    private boolean isEditing = false;
 
     private ArrayList<JPanel> jPanels = new ArrayList<>();
     private ArrayList<JLabel> coreJLabels = new ArrayList<>();
@@ -44,12 +49,18 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
 
 
-    public GameSettingsGeneratorUI(String gameID)
+    public GameSettingsGeneratorUI(String gameID, boolean isEditing)
     {
         this.gameID = gameID;
+        this.isEditing = isEditing;
 
         setTitle("Game Settings INI Generator");
         generateUI();
+
+        if (isEditing) {
+            loadINISettingsToUI();
+        }
+
         for (int i=0; i<jPanels.size(); i++) {
             JButton jButton = new JButton("Generate Game Settings INI");
             generateINIs.add(jButton);
@@ -352,5 +363,306 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                 || controlOption.equals("Wii Remote 2 Profile")
                 || controlOption.equals("Wii Remote 3 Profile")
                 || controlOption.equals("Wii Remote 4 Profile");
+    }
+
+    private void loadINISettingsToUI() {
+        //use WiiTDB file to get folder path
+        File tempSettingsFile = new File("wiitdb.txt");
+        String wiiTDBFilePath = tempSettingsFile.getAbsolutePath();
+        int fileNameIndex = wiiTDBFilePath.lastIndexOf("wiitdb.txt");
+        String filePathSeparator = wiiTDBFilePath.substring(fileNameIndex-1, fileNameIndex);
+        String wiiTDBFilePathFolder = wiiTDBFilePath.substring(0, wiiTDBFilePath.lastIndexOf(filePathSeparator));
+
+        File chosenINIFile = new File(wiiTDBFilePathFolder + filePathSeparator + "GameSettings" + filePathSeparator + gameID + ".ini");
+        ArrayList<String> iniLines = readINILines(chosenINIFile);
+        ArrayList<String> iniSettings = getINISettings(iniLines);
+        ArrayList<String> iniSettingValues = getINIValues(iniLines);
+        ArrayList<String> translatedINISettings = translateINISettings(iniSettings);
+        loadIntoUI(translatedINISettings, iniSettingValues);
+    }
+
+    private void loadIntoUI(ArrayList<String> translatedINISettings, ArrayList<String> iniSettingValues) {
+        for (int i=0; i<translatedINISettings.size(); i++) {
+            setAppropriateUIElement(translatedINISettings.get(i), iniSettingValues.get(i));
+        }
+    }
+
+    private void setAppropriateUIElement(String translatedINISetting, String settingValue) {
+
+
+        for (int i=0; i<coreJLabels.size(); i++) {
+            if (translatedINISetting.equals(coreJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    coreJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    if (settingValue.equals("True")) {
+                        coreJComboBoxes.get(i).setSelectedIndex(1);
+                    }
+                    else {
+                        coreJComboBoxes.get(i).setSelectedIndex(2);
+                    }
+                }
+            }
+        }
+
+        for (int i=0; i<videoSettingsJLabels.size(); i++) {
+            if (translatedINISetting.equals(videoSettingsJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    videoSettingsJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    if (settingValue.equals("True")) {
+                        videoSettingsJComboBoxes.get(i).setSelectedIndex(1);
+                    }
+                    else {
+                        videoSettingsJComboBoxes.get(i).setSelectedIndex(2);
+                    }
+                }
+            }
+        }
+
+        for (int i=0; i<videoEnhancementsJLabels.size(); i++) {
+            if (translatedINISetting.equals(videoEnhancementsJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    videoEnhancementsJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    if (settingValue.equals("True")) {
+                        videoEnhancementsJComboBoxes.get(i).setSelectedIndex(1);
+                    }
+                    else {
+                        videoEnhancementsJComboBoxes.get(i).setSelectedIndex(2);
+                    }
+                }
+            }
+        }
+
+        for (int i=0; i<videoHacksJLabels.size(); i++) {
+            if (translatedINISetting.equals(videoHacksJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    videoHacksJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    if (settingValue.equals("True")) {
+                        videoHacksJComboBoxes.get(i).setSelectedIndex(1);
+                    }
+                    else {
+                        videoHacksJComboBoxes.get(i).setSelectedIndex(2);
+                    }
+                }
+            }
+        }
+
+        if (translatedINISetting.equals(videoHardwareLabel.getText())) {
+            if (settingValue.equals("True")) {
+                videoHardwareJComboBox.setSelectedIndex(1);
+            }
+            else {
+                videoHardwareJComboBox.setSelectedIndex(2);
+            }
+        }
+
+        if (translatedINISetting.equals(dspAudioLabel.getText())) {
+            dspAudioVolumeSlider.setValue(Integer.parseInt(settingValue));
+        }
+
+        for (int i=0; i<wiiJLabels.size(); i++) {
+            if (translatedINISetting.equals(wiiJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    wiiJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    if (settingValue.equals("True")) {
+                        wiiJComboBoxes.get(i).setSelectedIndex(1);
+                    }
+                    else {
+                        wiiJComboBoxes.get(i).setSelectedIndex(2);
+                    }
+                }
+            }
+        }
+
+        int comboBoxIndex = 0;
+        int textFieldIndex = 0;
+
+        for (int i=0; i<controlJLabels.size(); i++) {
+
+            if (translatedINISetting.equals(controlJLabels.get(i).getText())) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                    int index = getIndexOfDifferingSetting(translatedINISetting);
+                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                    controlJComboBoxes.get(comboBoxIndex).setSelectedIndex(indexToSetTo);
+                }
+                else {
+                    controlJTextFields.get(textFieldIndex).setText(settingValue);
+                }
+            }
+
+            if (controlJLabels.get(i).getText().contains("Profile")) {
+                textFieldIndex++;
+            }
+            else {
+                comboBoxIndex++;
+            }
+        }
+    }
+
+    private int getIndexToSetTo(String settingValue, String[] iniConfigOptions) {
+        for (int i=0; i<iniConfigOptions.length; i++) {
+            if (iniConfigOptions[i].equals(settingValue)) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private boolean isInArray(String string, String[] array) {
+        for (int i=0; i<array.length; i++) {
+            if (string.equals(array[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private int getIndexOfDifferingSetting(String differingSetting) {
+        for (int i=0; i<DifferingINIConfigOptions.differentConfigOptionNames.length; i++) {
+            if (differingSetting.equals(DifferingINIConfigOptions.differentConfigOptionNames[i])) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private ArrayList<String> readINILines(File chosenINIFile) {
+        ArrayList<String> lines = new ArrayList<>();
+        Scanner inputStream = null;
+
+        try {
+            inputStream = new Scanner(new FileInputStream(chosenINIFile));
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>();
+        }
+
+        while (inputStream.hasNextLine()) {
+            lines.add(inputStream.nextLine());
+        }
+
+        inputStream.close();
+
+        return lines;
+    }
+
+    private ArrayList<String> getINISettings(ArrayList<String> iniLines) {
+        ArrayList<String> iniSettings = new ArrayList<>();
+
+        for (int i=0; i<iniLines.size(); i++) {
+            String iniLine = iniLines.get(i);
+            if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable")) {
+                String iniSettingName = iniLine.split("=")[0];
+                iniSettings.add(iniSettingName);
+            }
+        }
+
+        return iniSettings;
+    }
+
+    private ArrayList<String> getINIValues(ArrayList<String> iniLines) {
+        ArrayList<String> iniSettingsValues = new ArrayList<>();
+
+        for (int i=0; i<iniLines.size(); i++) {
+            String iniLine = iniLines.get(i);
+            if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable")) {
+                String iniSettingValue = iniLine.split("=")[1];
+                iniSettingsValues.add(iniSettingValue);
+            }
+        }
+
+        return iniSettingsValues;
+    }
+
+    private ArrayList<String> translateINISettings(ArrayList<String> iniSettings) {
+        ArrayList<String> translatedIniSettings = new ArrayList<>();
+
+        for (int i=0; i<iniSettings.size(); i++) {
+            String iniSetting = iniSettings.get(i);
+            String translatedINISetting = getTranslatedSetting(iniSetting);
+            translatedIniSettings.add(translatedINISetting);
+        }
+
+        return translatedIniSettings;
+    }
+
+    private String getTranslatedSetting(String iniSetting) {
+
+        for (int i=0; i<INIConfigNames.INICoreOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INICoreOptions[i])) {
+                return ConfigNames.coreOptions[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIVideoSettingsOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIVideoSettingsOptions[i])) {
+                return ConfigNames.videoSettingsOptions[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIVideoEnhancementsOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIVideoEnhancementsOptions[i])) {
+                return ConfigNames.videoEnhancementsOptions[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIVideoHacksOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIVideoHacksOptions[i])) {
+                return ConfigNames.videoHacksOptions[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIVideoHardwareOption.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIVideoHardwareOption[i])) {
+                return ConfigNames.videoHardwareOption[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIDspAudioOption.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIDspAudioOption[i])) {
+                return ConfigNames.dspAudioOption[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIWiiOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIWiiOptions[i])) {
+                return ConfigNames.wiiOptions[i];
+            }
+        }
+
+        for (int i=0; i<INIConfigNames.INIControlOptions.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INIControlOptions[i])) {
+                return ConfigNames.controlOptions[i];
+            }
+        }
+
+        return "";
     }
 }
