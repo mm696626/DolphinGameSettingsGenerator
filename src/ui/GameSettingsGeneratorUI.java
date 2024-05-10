@@ -391,79 +391,20 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
 
         for (int i=0; i<coreJLabels.size(); i++) {
-            if (translatedINISetting.equals(coreJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
-                    int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
-                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
-                    coreJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
-                }
-                else {
-                    if (settingValue.equals("True")) {
-                        coreJComboBoxes.get(i).setSelectedIndex(1);
-                    }
-                    else {
-                        coreJComboBoxes.get(i).setSelectedIndex(2);
-                    }
-                }
-            }
+            setUIElement(coreJLabels, coreJComboBoxes, translatedINISetting, settingValue, i);
         }
 
         for (int i=0; i<videoSettingsJLabels.size(); i++) {
-            if (translatedINISetting.equals(videoSettingsJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
-                    int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
-                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
-                    videoSettingsJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
-                }
-                else {
-                    if (settingValue.equals("True")) {
-                        videoSettingsJComboBoxes.get(i).setSelectedIndex(1);
-                    }
-                    else {
-                        videoSettingsJComboBoxes.get(i).setSelectedIndex(2);
-                    }
-                }
-            }
+            setUIElement(videoSettingsJLabels, videoSettingsJComboBoxes, translatedINISetting, settingValue, i);
+
         }
 
         for (int i=0; i<videoEnhancementsJLabels.size(); i++) {
-            if (translatedINISetting.equals(videoEnhancementsJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
-                    int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
-                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
-                    videoEnhancementsJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
-                }
-                else {
-                    if (settingValue.equals("True")) {
-                        videoEnhancementsJComboBoxes.get(i).setSelectedIndex(1);
-                    }
-                    else {
-                        videoEnhancementsJComboBoxes.get(i).setSelectedIndex(2);
-                    }
-                }
-            }
+            setUIElement(videoEnhancementsJLabels, videoEnhancementsJComboBoxes, translatedINISetting, settingValue, i);
         }
 
         for (int i=0; i<videoHacksJLabels.size(); i++) {
-            if (translatedINISetting.equals(videoHacksJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
-                    int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
-                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
-                    videoHacksJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
-                }
-                else {
-                    if (settingValue.equals("True")) {
-                        videoHacksJComboBoxes.get(i).setSelectedIndex(1);
-                    }
-                    else {
-                        videoHacksJComboBoxes.get(i).setSelectedIndex(2);
-                    }
-                }
-            }
+            setUIElement(videoHacksJLabels, videoHacksJComboBoxes, translatedINISetting, settingValue, i);
         }
 
         if (translatedINISetting.equals(videoHardwareLabel.getText())) {
@@ -480,22 +421,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         }
 
         for (int i=0; i<wiiJLabels.size(); i++) {
-            if (translatedINISetting.equals(wiiJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
-                    int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
-                    int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
-                    wiiJComboBoxes.get(i).setSelectedIndex(indexToSetTo);
-                }
-                else {
-                    if (settingValue.equals("True")) {
-                        wiiJComboBoxes.get(i).setSelectedIndex(1);
-                    }
-                    else {
-                        wiiJComboBoxes.get(i).setSelectedIndex(2);
-                    }
-                }
-            }
+            setUIElement(wiiJLabels, wiiJComboBoxes, translatedINISetting, settingValue, i);
         }
 
         int comboBoxIndex = 0;
@@ -523,6 +449,26 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             }
         }
     }
+
+    private void setUIElement(ArrayList<JLabel> jLabels, ArrayList<JComboBox> comboBoxes, String translatedINISetting, String settingValue, int i) {
+        if (translatedINISetting.equals(jLabels.get(i).getText())) {
+            if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                int index = getIndexOfDifferingSetting(translatedINISetting);
+                String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
+                comboBoxes.get(i).setSelectedIndex(indexToSetTo);
+            }
+            else {
+                if (settingValue.equals("True")) {
+                    comboBoxes.get(i).setSelectedIndex(1);
+                }
+                else {
+                    comboBoxes.get(i).setSelectedIndex(2);
+                }
+            }
+        }
+    }
+
 
     private int getIndexToSetTo(String settingValue, String[] iniConfigOptions) {
         for (int i=0; i<iniConfigOptions.length; i++) {
