@@ -1,5 +1,12 @@
 package ui;
 
+import constants.ConfigNames;
+import constants.ConfigOptions;
+import constants.DifferingINIConfigOptions;
+import constants.INIConfigNames;
+import io.GameSettingINISaver;
+import io.GameSettingsSaver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,10 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import constants.*;
-import io.GameSettingINISaver;
-import io.GameSettingsSaver;
 
 public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
@@ -48,6 +51,12 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private ArrayList<JButton> generateINIs = new ArrayList<>();
 
+    //used only for editing existing INI files
+    private ArrayList<String> otherLines = new ArrayList<>();
+    private ArrayList<String> iniSettings = new ArrayList<>();
+    private ArrayList<String> iniSettingsValues = new ArrayList<>();
+    private String[] supportedCategories = {"[Core]", "[Video_Settings]","[Video_Enhancements]", "[Video_Hacks]","[Video_Hardware]","[DSP]","[Wii]","[Controls]"};
+
 
 
     public GameSettingsGeneratorUI(String gameID, boolean isEditing, String iniFilePath)
@@ -81,7 +90,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             try {
-                gameSettingINISaver.saveINI(tempSettingsFile, iniFilePath);
+                gameSettingINISaver.saveINI(tempSettingsFile, iniFilePath, otherLines);
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
@@ -390,15 +399,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             iniLines = readINILines(new File(iniFilePath));
         }
 
-        ArrayList<String> iniSettings = getINISettings(iniLines);
-        ArrayList<String> iniSettingValues = getINIValues(iniLines);
+        getINISettings(iniLines);
         ArrayList<String> translatedINISettings = translateINISettings(iniSettings);
-        loadIntoUI(translatedINISettings, iniSettingValues);
+        loadIntoUI(translatedINISettings, iniSettingsValues);
     }
 
     private void loadIntoUI(ArrayList<String> translatedINISettings, ArrayList<String> iniSettingValues) {
         for (int i=0; i<translatedINISettings.size(); i++) {
-            setAppropriateUIElement(translatedINISettings.get(i), iniSettingValues.get(i));
+            setAppropriateUIElement(translatedINISettings.get(i), iniSettingValues.get(i).trim());
         }
     }
 
@@ -410,7 +418,6 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
         for (int i=0; i<videoSettingsJLabels.size(); i++) {
             setUIElement(videoSettingsJLabels, videoSettingsJComboBoxes, translatedINISetting, settingValue, i);
-
         }
 
         for (int i=0; i<videoEnhancementsJLabels.size(); i++) {
@@ -536,39 +543,42 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         return lines;
     }
 
-    private ArrayList<String> getINISettings(ArrayList<String> iniLines) {
-        ArrayList<String> iniSettings = new ArrayList<>();
+    private void getINISettings(ArrayList<String> iniLines) {
+       boolean isValidBlock = false;
 
         for (int i=0; i<iniLines.size(); i++) {
             String iniLine = iniLines.get(i);
-            if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable")) {
+            if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable") && isValidBlock) {
                 String iniSettingName = iniLine.split("=")[0];
-                iniSettings.add(iniSettingName);
-            }
-        }
-
-        return iniSettings;
-    }
-
-    private ArrayList<String> getINIValues(ArrayList<String> iniLines) {
-        ArrayList<String> iniSettingsValues = new ArrayList<>();
-
-        for (int i=0; i<iniLines.size(); i++) {
-            String iniLine = iniLines.get(i);
-            if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable")) {
                 String iniSettingValue = iniLine.split("=")[1];
+                iniSettings.add(iniSettingName);
                 iniSettingsValues.add(iniSettingValue);
             }
-        }
+            else if (iniLine.contains("[")) {
+                isValidBlock = false;
 
-        return iniSettingsValues;
+                for (int index=0; index<supportedCategories.length; index++) {
+                    if (iniLine.equals(supportedCategories[index])) {
+                        isValidBlock = true;
+                        break;
+                    }
+                }
+
+                if (!isValidBlock) {
+                    otherLines.add(iniLine);
+                }
+            }
+            else {
+                otherLines.add(iniLine);
+            }
+        }
     }
 
     private ArrayList<String> translateINISettings(ArrayList<String> iniSettings) {
         ArrayList<String> translatedIniSettings = new ArrayList<>();
 
         for (int i=0; i<iniSettings.size(); i++) {
-            String iniSetting = iniSettings.get(i);
+            String iniSetting = iniSettings.get(i).trim();
             String translatedINISetting = getTranslatedSetting(iniSetting);
             translatedIniSettings.add(translatedINISetting);
         }

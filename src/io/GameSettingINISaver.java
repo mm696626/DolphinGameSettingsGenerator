@@ -21,7 +21,7 @@ public class GameSettingINISaver {
         this.gameID = gameID;
     }
 
-    public void saveINI(File tempSettingsFile, String iniFilePath) throws FileNotFoundException {
+    public void saveINI(File tempSettingsFile, String iniFilePath, ArrayList<String> otherLines) throws FileNotFoundException {
         PrintWriter outputStream = null;
 
         //pass in temp settings file to use file path to save to folder
@@ -55,6 +55,11 @@ public class GameSettingINISaver {
             String iniSettingsForSettingBlock = runAppropriateSettingBlock(settingsBlocks.get(i));
             outputStream.print(iniSettingsForSettingBlock);
         }
+
+        for (int i=0; i<otherLines.size(); i++) {
+            outputStream.println(otherLines.get(i));
+        }
+
         outputStream.close();
     }
 
