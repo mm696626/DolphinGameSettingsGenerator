@@ -100,10 +100,6 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             }
             JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully generated!");
             setVisible(false);
-            DolphinINIGeneratorUI dolphinINIGeneratorUI = new DolphinINIGeneratorUI();
-            dolphinINIGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            dolphinINIGeneratorUI.pack();
-            dolphinINIGeneratorUI.setVisible(true);
         }
     }
 

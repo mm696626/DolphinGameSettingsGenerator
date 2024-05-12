@@ -137,11 +137,11 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
         pickOtherGameSettingsFile = new JButton("Choose Other Game Settings File");
         pickOtherGameSettingsFile.addActionListener(this);
         jPanel.add(pickOtherGameSettingsFile);
+        add(jPanel);
 
         //add scroll bar just in case
         JScrollPane jScrollPane = new JScrollPane(jPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         container.add(jScrollPane);
-        add(jPanel);
     }
 
     private ImageIcon getCoverArtForID(String gameID) {
