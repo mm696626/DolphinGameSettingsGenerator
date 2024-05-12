@@ -57,7 +57,7 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
                 ExtensionValidator extensionValidator = new ExtensionValidator();
                 if (extensionValidator.isExtensionValid(iniFilePath)) {
                     GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(null, true, iniFilePath);
-                    gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                     gameSettingsGeneratorUI.pack();
                     gameSettingsGeneratorUI.setVisible(true);
                     setVisible(false);
@@ -73,7 +73,7 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
             if (e.getSource() == gameSettingsButtons[i]) {
                 String gameID = gameIDs[i];
                 GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, true, null);
-                gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
                 gameSettingsGeneratorUI.pack();
                 gameSettingsGeneratorUI.setVisible(true);
                 return true;

@@ -14,8 +14,7 @@ import java.io.IOException;
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
-    private JButton pickGame, generateINI, editINI, moveGameSettingsToUserFolder;
-    private String gameID = "";
+    private JButton pickGame, editINI, moveGameSettingsToUserFolder;
     private String userFolderPath = "";
     GridBagConstraints gridBagConstraints = null;
 
@@ -31,9 +30,6 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
         pickGame = new JButton("Pick Game for INI");
         pickGame.addActionListener(this);
-
-        generateINI = new JButton("Pick Game Settings for INI");
-        generateINI.addActionListener(this);
 
         editINI = new JButton("Edit Generated INI");
         editINI.addActionListener(this);
@@ -51,13 +47,9 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
         gridBagConstraints.gridx=1;
         gridBagConstraints.gridy=0;
-        add(generateINI, gridBagConstraints);
-
-        gridBagConstraints.gridx=2;
-        gridBagConstraints.gridy=0;
         add(editINI, gridBagConstraints);
 
-        gridBagConstraints.gridx=3;
+        gridBagConstraints.gridx=2;
         gridBagConstraints.gridy=0;
         add(moveGameSettingsToUserFolder, gridBagConstraints);
     }
@@ -70,26 +62,6 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
             gamePickerUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             gamePickerUI.pack();
             gamePickerUI.setVisible(true);
-        }
-
-        if (e.getSource() == generateINI) {
-
-            File chosenGameID = new File("chosenGameID.txt");
-            if (chosenGameID.exists()) {
-                setVisible(false);
-
-                GameIDLoader gameIDLoader = new GameIDLoader();
-                gameID = gameIDLoader.getGameIDFromChosenGameIDFile();
-
-                GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, false, null);
-                gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameSettingsGeneratorUI.pack();
-                gameSettingsGeneratorUI.setVisible(true);
-            }
-
-            else {
-                JOptionPane.showMessageDialog(this, "No game has been chosen!");
-            }
         }
 
         if (e.getSource() == editINI) {

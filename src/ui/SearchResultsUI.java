@@ -1,11 +1,13 @@
 package ui;
 
+import io.GameIDLoader;
 import io.GameIDSaver;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 public class SearchResultsUI extends JFrame implements ActionListener {
@@ -35,6 +37,18 @@ public class SearchResultsUI extends JFrame implements ActionListener {
                 chosenButtonText = chosenButtonText.split(" ")[0];
                 GameIDSaver gameIDSaver = new GameIDSaver();
                 gameIDSaver.saveGameIDChoiceToGameIDChoiceFile(chosenButtonText);
+                File chosenGameID = new File("chosenGameID.txt");
+                if (chosenGameID.exists()) {
+                    setVisible(false);
+
+                    GameIDLoader gameIDLoader = new GameIDLoader();
+                    String gameID = gameIDLoader.getGameIDFromChosenGameIDFile();
+
+                    GameSettingsGeneratorUI gameSettingsGeneratorUI = new GameSettingsGeneratorUI(gameID, false, null);
+                    gameSettingsGeneratorUI.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    gameSettingsGeneratorUI.pack();
+                    gameSettingsGeneratorUI.setVisible(true);
+                }
                 setVisible(false);
             }
         }
