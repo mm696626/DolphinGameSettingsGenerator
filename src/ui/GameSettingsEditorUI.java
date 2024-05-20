@@ -7,7 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GameSettingsEditorUI extends JFrame implements ActionListener {
 
@@ -127,7 +130,7 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
                 jButton.setIcon(coverArt);
             }
             else {
-                jButton.setText(gameID);
+                jButton.setText(getTextForButton(gameIDs[i]));
             }
 
             gameSettingsButtons[i] = jButton;
@@ -142,6 +145,44 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
         //add scroll bar just in case
         JScrollPane jScrollPane = new JScrollPane(jPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         container.add(jScrollPane);
+    }
+
+    private String getTextForButton(String gameID) {
+        Scanner inputStream = null;
+        try {
+            inputStream = new Scanner(new FileInputStream("wiitdb.txt"));
+        } catch (FileNotFoundException e) {
+            return "";
+        }
+
+        String buttonText = "";
+
+        while (inputStream.hasNextLine()) {
+            String line = inputStream.nextLine();
+
+            if (line.contains(gameID)) {
+                String gameTitle = line.split("=")[1].trim();
+                buttonText = gameTitle + " " + getAppropriateRegion(gameID);
+                break;
+            }
+        }
+
+        return buttonText;
+    }
+
+    private String getAppropriateRegion(String gameID) {
+        if (gameID.charAt(3) == 'E') {
+            return "(USA)";
+        }
+        else if (gameID.charAt(3) == 'P') {
+            return "(Europe)";
+        }
+        else if (gameID.charAt(3) == 'J') {
+            return ("(Japan)");
+        }
+        else {
+            return "";
+        }
     }
 
     private ImageIcon getCoverArtForID(String gameID) {
