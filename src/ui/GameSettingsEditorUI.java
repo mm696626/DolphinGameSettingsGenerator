@@ -162,27 +162,56 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
 
             if (line.contains(gameID)) {
                 String gameTitle = line.split("=")[1].trim();
-                buttonText = gameTitle + " " + getAppropriateRegion(gameID);
+                buttonText = gameTitle + " " + getAppropriateRegion(gameTitle, gameID);
                 break;
             }
         }
 
+        inputStream.close();
         return buttonText;
     }
 
-    private String getAppropriateRegion(String gameID) {
-        if (gameID.charAt(3) == 'E') {
-            return "(USA)";
+    private String getAppropriateRegion(String gameTitle, String gameID) {
+        int numGamesWithThisTitle = getNumGamesWithTitle(gameTitle);
+
+        if (numGamesWithThisTitle > 1) {
+            if (gameID.charAt(3) == 'E') {
+                return "(USA)";
+            }
+            else if (gameID.charAt(3) == 'P') {
+                return "(Europe)";
+            }
+            else if (gameID.charAt(3) == 'J') {
+                return ("(Japan)");
+            }
+            else {
+                return "";
+            }
         }
-        else if (gameID.charAt(3) == 'P') {
-            return "(Europe)";
+
+        return "";
+    }
+
+    private int getNumGamesWithTitle(String gameTitle) {
+        int numGamesWithTitle = 0;
+
+        Scanner inputStream = null;
+        try {
+            inputStream = new Scanner(new FileInputStream("wiitdb.txt"));
+        } catch (FileNotFoundException e) {
+            return 0;
         }
-        else if (gameID.charAt(3) == 'J') {
-            return ("(Japan)");
+
+        while (inputStream.hasNextLine()) {
+            String line = inputStream.nextLine();
+
+            if (line.contains(gameTitle)) {
+                numGamesWithTitle++;
+            }
         }
-        else {
-            return "";
-        }
+
+        inputStream.close();
+        return numGamesWithTitle;
     }
 
     private ImageIcon getCoverArtForID(String gameID) {
