@@ -185,7 +185,7 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
                 return ("(Japan)");
             }
             else {
-                return "";
+                return "(Other Region)";
             }
         }
 
