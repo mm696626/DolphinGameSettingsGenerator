@@ -93,35 +93,35 @@ public class GameSettingINISaver {
         String settingBlockHeader = settingBlock.split("\n")[0];
 
         if (settingBlockHeader.equals("[Core]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.coreOptions, INIConfigNames.INICoreOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CORE_OPTIONS, INIConfigNames.INI_CORE_OPTIONS);
         }
 
         else if (settingBlockHeader.equals("[Video_Settings]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.videoSettingsOptions, INIConfigNames.INIVideoSettingsOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_SETTINGS_OPTIONS, INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS);
         }
 
         else if (settingBlockHeader.equals("[Video_Enhancements]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.videoEnhancementsOptions, INIConfigNames.INIVideoEnhancementsOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS, INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS);
         }
 
         else if (settingBlockHeader.equals("[Video_Hacks]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.videoHacksOptions, INIConfigNames.INIVideoHacksOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HACKS_OPTIONS, INIConfigNames.INI_VIDEO_HACKS_OPTIONS);
         }
 
         else if (settingBlockHeader.equals("[Video_Hardware]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.videoHardwareOption, INIConfigNames.INIVideoHardwareOption);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HARDWARE_OPTION, INIConfigNames.INI_VIDEO_HARDWARE_OPTION);
         }
 
         else if (settingBlockHeader.equals("[DSP]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.dspAudioOption, INIConfigNames.INIDspAudioOption);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.DSP_AUDIO_OPTION, INIConfigNames.INI_DSP_AUDIO_OPTION);
         }
 
         else if (settingBlockHeader.equals("[Wii]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.wiiOptions, INIConfigNames.INIWiiOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.WII_OPTIONS, INIConfigNames.INI_WII_OPTIONS);
         }
 
         else if (settingBlockHeader.equals("[Controls]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.controlOptions, INIConfigNames.INIControlOptions);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CONTROL_OPTIONS, INIConfigNames.INI_CONTROL_OPTIONS);
         }
 
         else {
@@ -160,9 +160,9 @@ public class GameSettingINISaver {
     }
 
     private String getCorrespondingINISettingValue(String setting, String settingValue) {
-        for (int i = 0; i< DifferingINIConfigOptions.differentConfigOptionNames.length; i++) {
-            if (setting.equals(DifferingINIConfigOptions.differentConfigOptionNames[i])) {
-                return findCorrespondingINIValue(settingValue, DifferingINIConfigOptions.differingConfigOptions[i], DifferingINIConfigOptions.differingINIConfigOptions[i]);
+        for (int i = 0; i< DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES.length; i++) {
+            if (setting.equals(DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES[i])) {
+                return findCorrespondingINIValue(settingValue, DifferingINIConfigOptions.DIFFERING_CONFIG_OPTIONS[i], DifferingINIConfigOptions.DIFFERING_INI_CONFIG_OPTIONS[i]);
             }
         }
 

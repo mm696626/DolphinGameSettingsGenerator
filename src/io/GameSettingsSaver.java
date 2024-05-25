@@ -30,13 +30,13 @@ public class GameSettingsSaver {
             System.exit(0);
         }
 
-        String coreSettings = saveSettings(coreJComboBoxes,  "Core", ConfigNames.coreOptions);
-        String videoSettings = saveSettings(videoSettingsJComboBoxes, "Video_Settings", ConfigNames.videoSettingsOptions);
-        String videoEnhancementSettings = saveSettings(videoEnhancementsJComboBoxes, "Video_Enhancements",  ConfigNames.videoEnhancementsOptions);
-        String videoHacksSettings = saveSettings(videoHacksJComboBoxes, "Video_Hacks", ConfigNames.videoHacksOptions);
+        String coreSettings = saveSettings(coreJComboBoxes,  "Core", ConfigNames.CORE_OPTIONS);
+        String videoSettings = saveSettings(videoSettingsJComboBoxes, "Video_Settings", ConfigNames.VIDEO_SETTINGS_OPTIONS);
+        String videoEnhancementSettings = saveSettings(videoEnhancementsJComboBoxes, "Video_Enhancements",  ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS);
+        String videoHacksSettings = saveSettings(videoHacksJComboBoxes, "Video_Hacks", ConfigNames.VIDEO_HACKS_OPTIONS);
         String videoHardwareSetting = saveVideoHardwareSetting(videoHardwareJComboBox);
         String dspAudioSetting = saveDSPAudioSetting(dspAudioVolumeSlider);
-        String wiiSettings = saveSettings(wiiJComboBoxes, "Wii", ConfigNames.wiiOptions);
+        String wiiSettings = saveSettings(wiiJComboBoxes, "Wii", ConfigNames.WII_OPTIONS);
         String controlSettings = saveControlSettings(controlJComboBoxes, controlJTextFields);
 
 
@@ -123,7 +123,7 @@ public class GameSettingsSaver {
         else {
             videoHardwareSetting += "[Video_Hardware]\n";
             if (videoHardwareJComboBox.getSelectedIndex() != 0) {
-                String settingValue = ConfigNames.videoHardwareOption[0] + "=" + videoHardwareJComboBox.getItemAt(videoHardwareJComboBox.getSelectedIndex()).toString() + "\n";
+                String settingValue = ConfigNames.VIDEO_HARDWARE_OPTION[0] + "=" + videoHardwareJComboBox.getItemAt(videoHardwareJComboBox.getSelectedIndex()).toString() + "\n";
                 videoHardwareSetting += settingValue;
             }
         }
@@ -144,7 +144,7 @@ public class GameSettingsSaver {
 
         else {
             dspAudioSetting += "[DSP]\n";
-            String settingValue = ConfigNames.dspAudioOption[0] + "=" + dspAudioVolumeSlider.getValue() + "\n";
+            String settingValue = ConfigNames.DSP_AUDIO_OPTION[0] + "=" + dspAudioVolumeSlider.getValue() + "\n";
             dspAudioSetting += settingValue;
         }
 
@@ -169,18 +169,18 @@ public class GameSettingsSaver {
             int comboBoxesChecked = 0;
             int textFieldsChecked = 0;
 
-            for (int i=0; i<ConfigNames.controlOptions.length; i++) {
+            for (int i = 0; i<ConfigNames.CONTROL_OPTIONS.length; i++) {
 
-                if (!ConfigNames.controlOptions[i].contains("Profile")) {
+                if (!ConfigNames.CONTROL_OPTIONS[i].contains("Profile")) {
                     if (controlJComboBoxes.get(comboBoxesChecked).getSelectedIndex() != 0) {
-                        String settingValue = ConfigNames.controlOptions[i] + "=" + controlJComboBoxes.get(comboBoxesChecked).getItemAt(controlJComboBoxes.get(comboBoxesChecked).getSelectedIndex()).toString() + "\n";
+                        String settingValue = ConfigNames.CONTROL_OPTIONS[i] + "=" + controlJComboBoxes.get(comboBoxesChecked).getItemAt(controlJComboBoxes.get(comboBoxesChecked).getSelectedIndex()).toString() + "\n";
                         controlSettings += settingValue;
                     }
                     comboBoxesChecked++;
                 }
                 else {
                     if (controlJTextFields.get(textFieldsChecked).getText().trim().length() > 0) {
-                        String settingValue = ConfigNames.controlOptions[i] + "=" + controlJTextFields.get(textFieldsChecked).getText().trim() + "\n";
+                        String settingValue = ConfigNames.CONTROL_OPTIONS[i] + "=" + controlJTextFields.get(textFieldsChecked).getText().trim() + "\n";
                         controlSettings += settingValue;
                     }
                     textFieldsChecked++;

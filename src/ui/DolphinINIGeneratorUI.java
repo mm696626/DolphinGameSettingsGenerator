@@ -1,5 +1,6 @@
 package ui;
 
+import constants.GeneratorSettings;
 import io.GameSettingsMover;
 import validation.UserFolderValidator;
 
@@ -8,25 +9,46 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
-    private JButton pickGame, editINI, moveGameSettingsToUserFolder;
+    private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoSyncUserFolderPath;
+    private JLabel useCoverArtLabel, autoSyncEnabledLabel, autoSyncUserFolderPathLabel;
+    private JCheckBox useCoverArt, autoSyncEnabled;
     private String userFolderPath = "";
-    GridBagConstraints gridBagConstraints = null;
+    private String autoSyncUserFolderPath = "";
+    private JTextField autoSyncUserFolderPathField;
+
+
+    private ArrayList<JPanel> jPanels = new ArrayList<>();
 
     public DolphinINIGeneratorUI()
     {
-
         File chosenGameID = new File("chosenGameID.txt");
         if (chosenGameID.exists()) {
             chosenGameID.delete();
         }
 
         setTitle("Dolphin Emulator INI Generator");
+        generateUI();
+    }
 
+    private void generateUI() {
+        JPanel mainMenuPanel = new JPanel();
+        GridLayout mainMenuGridLayout = new GridLayout(3, 1);
+        mainMenuPanel.setLayout(mainMenuGridLayout);
+
+        JPanel generatorSettingsPanel = new JPanel();
+        GridLayout generatorSettingsGridLayout = new GridLayout(2,4);
+        generatorSettingsPanel.setLayout(generatorSettingsGridLayout);
+
+        //main menu panel
         pickGame = new JButton("Pick Game for INI");
         pickGame.addActionListener(this);
 
@@ -36,21 +58,47 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         moveGameSettingsToUserFolder = new JButton("Move Game Settings to Dolphin User Folder");
         moveGameSettingsToUserFolder.addActionListener(this);
 
-        setLayout(new GridBagLayout());
-        gridBagConstraints = new GridBagConstraints();
+        //game settings panel
+        autoSyncUserFolderPathLabel = new JLabel("Auto Sync User Folder Path");
 
+        autoSyncUserFolderPathField = new JTextField(10);
+        autoSyncUserFolderPathField.setEditable(false);
 
-        gridBagConstraints.gridx=0;
-        gridBagConstraints.gridy=0;
-        add(pickGame, gridBagConstraints);
+        browseForAutoSyncUserFolderPath = new JButton("Browse");
+        browseForAutoSyncUserFolderPath.addActionListener(this);
 
-        gridBagConstraints.gridx=1;
-        gridBagConstraints.gridy=0;
-        add(editINI, gridBagConstraints);
+        //purely for UI padding so the other options are in the correct spots
+        JLabel paddingJLabel = new JLabel("");
 
-        gridBagConstraints.gridx=2;
-        gridBagConstraints.gridy=0;
-        add(moveGameSettingsToUserFolder, gridBagConstraints);
+        autoSyncEnabledLabel = new JLabel("Auto Sync Enabled");
+        autoSyncEnabled = new JCheckBox();
+
+        useCoverArtLabel = new JLabel("Use Cover Art for Editing INI UI");
+        useCoverArt = new JCheckBox();
+
+        autoSyncEnabled.addActionListener (e -> updateGeneratorSettings());
+        useCoverArt.addActionListener (e -> updateGeneratorSettings());
+
+        mainMenuPanel.add(pickGame);
+        mainMenuPanel.add(editINI);
+        mainMenuPanel.add(moveGameSettingsToUserFolder);
+
+        generatorSettingsPanel.add(autoSyncUserFolderPathLabel);
+        generatorSettingsPanel.add(autoSyncUserFolderPathField);
+        generatorSettingsPanel.add(browseForAutoSyncUserFolderPath);
+        generatorSettingsPanel.add(paddingJLabel);
+        generatorSettingsPanel.add(autoSyncEnabledLabel);
+        generatorSettingsPanel.add(autoSyncEnabled);
+        generatorSettingsPanel.add(useCoverArtLabel);
+        generatorSettingsPanel.add(useCoverArt);
+
+        jPanels.add(mainMenuPanel);
+        jPanels.add(generatorSettingsPanel);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.add("Main Menu", jPanels.get(0));
+        tabbedPane.add("Generator Settings", jPanels.get(1));
+        add(tabbedPane);
     }
 
     @Override
@@ -97,5 +145,41 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
                 return;
             }
         }
+
+        if (e.getSource() ==  browseForAutoSyncUserFolderPath) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int response = fileChooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                autoSyncUserFolderPath = fileChooser.getSelectedFile().getAbsolutePath();
+                UserFolderValidator userFolderValidator = new UserFolderValidator();
+                if (userFolderValidator.isValidUserFolder(autoSyncUserFolderPath)) {
+                    autoSyncUserFolderPathField.setText(autoSyncUserFolderPath);
+                    updateGeneratorSettings();
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "This isn't a valid User Folder!");
+                }
+            } else {
+                return;
+            }
+        }
+    }
+
+    private void updateGeneratorSettings() {
+        PrintWriter outputStream = null;
+
+        try{
+            outputStream = new PrintWriter( new FileOutputStream("generatorSettings.txt"));
+        }
+        catch (FileNotFoundException f) {
+            System.out.println("File does not exist");
+            System.exit(0);
+        }
+
+        outputStream.println(GeneratorSettings.AUTO_SYNC_PATH + ":" + autoSyncUserFolderPathField.getText().trim());
+        outputStream.println(GeneratorSettings.AUTO_SYNC_ENABLED + ":" + autoSyncEnabled.isSelected());
+        outputStream.println(GeneratorSettings.USE_COVER_ART + ":" + useCoverArt.isSelected());
+        outputStream.close();
     }
 }

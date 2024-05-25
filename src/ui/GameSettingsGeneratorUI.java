@@ -116,35 +116,35 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private void generateUI() {
         JPanel corePanel = new JPanel();
-        GridLayout coreGridLayout = new GridLayout(ConfigNames.coreOptions.length+1, 2);
+        GridLayout coreGridLayout = new GridLayout(ConfigNames.CORE_OPTIONS.length+1, 2);
         corePanel.setLayout(coreGridLayout);
 
         JPanel videoSettingsPanel = new JPanel();
-        GridLayout videoSettingsGridLayout = new GridLayout(ConfigNames.videoSettingsOptions.length+1,2);
+        GridLayout videoSettingsGridLayout = new GridLayout(ConfigNames.VIDEO_SETTINGS_OPTIONS.length+1,2);
         videoSettingsPanel.setLayout(videoSettingsGridLayout);
 
         JPanel videoEnhancementsPanel = new JPanel();
-        GridLayout videoEnhancementsGridLayout = new GridLayout(ConfigNames.videoEnhancementsOptions.length+1,2);
+        GridLayout videoEnhancementsGridLayout = new GridLayout(ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS.length+1,2);
         videoEnhancementsPanel.setLayout(videoEnhancementsGridLayout);
 
         JPanel videoHacksPanel = new JPanel();
-        GridLayout videoHacksGridLayout = new GridLayout(ConfigNames.videoHacksOptions.length+1,2);
+        GridLayout videoHacksGridLayout = new GridLayout(ConfigNames.VIDEO_HACKS_OPTIONS.length+1,2);
         videoHacksPanel.setLayout(videoHacksGridLayout);
 
         JPanel videoHardwarePanel = new JPanel();
-        GridLayout videoHardwareGridLayout = new GridLayout(ConfigNames.videoHardwareOption.length+1,2);
+        GridLayout videoHardwareGridLayout = new GridLayout(ConfigNames.VIDEO_HARDWARE_OPTION.length+1,2);
         videoHardwarePanel.setLayout(videoHardwareGridLayout);
 
         JPanel dspPanel = new JPanel();
-        GridLayout dspAudioGridLayout = new GridLayout(ConfigNames.dspAudioOption.length+1,2);
+        GridLayout dspAudioGridLayout = new GridLayout(ConfigNames.DSP_AUDIO_OPTION.length+1,2);
         videoHardwarePanel.setLayout(dspAudioGridLayout);
 
         JPanel wiiPanel = new JPanel();
-        GridLayout wiiGridLayout = new GridLayout(ConfigNames.wiiOptions.length+1,2);
+        GridLayout wiiGridLayout = new GridLayout(ConfigNames.WII_OPTIONS.length+1,2);
         wiiPanel.setLayout(wiiGridLayout);
 
         JPanel controlsPanel = new JPanel();
-        GridLayout controlGridLayout = new GridLayout(ConfigNames.controlOptions.length+1,2);
+        GridLayout controlGridLayout = new GridLayout(ConfigNames.CONTROL_OPTIONS.length+1,2);
         controlsPanel.setLayout(controlGridLayout);
 
         addToCorePanel(corePanel);
@@ -185,52 +185,52 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private void addToCorePanel(JPanel corePanel) {
 
-        for (int i=0; i<ConfigNames.coreOptions.length; i++) {
-            coreJLabels.add(new JLabel(ConfigNames.coreOptions[i]));
+        for (int i = 0; i<ConfigNames.CORE_OPTIONS.length; i++) {
+            coreJLabels.add(new JLabel(ConfigNames.CORE_OPTIONS[i]));
             corePanel.add(coreJLabels.get(i));
-            coreJComboBoxes.add(new JComboBox(getAppropriateCoreOptions(ConfigNames.coreOptions[i])));
+            coreJComboBoxes.add(new JComboBox(getAppropriateCoreOptions(ConfigNames.CORE_OPTIONS[i])));
             corePanel.add(coreJComboBoxes.get(i));
         }
     }
 
     private void addToVideoSettingsPanel(JPanel videoSettingsPanel) {
 
-        for (int i=0; i<ConfigNames.videoSettingsOptions.length; i++) {
-            videoSettingsJLabels.add(new JLabel(ConfigNames.videoSettingsOptions[i]));
+        for (int i = 0; i<ConfigNames.VIDEO_SETTINGS_OPTIONS.length; i++) {
+            videoSettingsJLabels.add(new JLabel(ConfigNames.VIDEO_SETTINGS_OPTIONS[i]));
             videoSettingsPanel.add(videoSettingsJLabels.get(i));
-            videoSettingsJComboBoxes.add(new JComboBox(getAppropriateVideoSettingsOptions(ConfigNames.videoSettingsOptions[i])));
+            videoSettingsJComboBoxes.add(new JComboBox(getAppropriateVideoSettingsOptions(ConfigNames.VIDEO_SETTINGS_OPTIONS[i])));
             videoSettingsPanel.add(videoSettingsJComboBoxes.get(i));
         }
     }
 
     private void addToVideoEnhancementsPanel(JPanel videoEnhancementsPanel) {
 
-        for (int i=0; i<ConfigNames.videoEnhancementsOptions.length; i++) {
-            videoEnhancementsJLabels.add(new JLabel(ConfigNames.videoEnhancementsOptions[i]));
+        for (int i = 0; i<ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS.length; i++) {
+            videoEnhancementsJLabels.add(new JLabel(ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS[i]));
             videoEnhancementsPanel.add(videoEnhancementsJLabels.get(i));
-            videoEnhancementsJComboBoxes.add(new JComboBox(getAppropriateVideoEnhancementOptions(ConfigNames.videoEnhancementsOptions[i])));
+            videoEnhancementsJComboBoxes.add(new JComboBox(getAppropriateVideoEnhancementOptions(ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS[i])));
             videoEnhancementsPanel.add(videoEnhancementsJComboBoxes.get(i));
         }
     }
     private void addToVideoHacksPanel(JPanel videoHacksPanel) {
 
-        for (int i=0; i<ConfigNames.videoHacksOptions.length; i++) {
-            videoHacksJLabels.add(new JLabel(ConfigNames.videoHacksOptions[i]));
+        for (int i = 0; i<ConfigNames.VIDEO_HACKS_OPTIONS.length; i++) {
+            videoHacksJLabels.add(new JLabel(ConfigNames.VIDEO_HACKS_OPTIONS[i]));
             videoHacksPanel.add(videoHacksJLabels.get(i));
-            videoHacksJComboBoxes.add(new JComboBox(ConfigOptions.trueFalseOptions));
+            videoHacksJComboBoxes.add(new JComboBox(ConfigOptions.TRUE_FALSE_OPTIONS));
             videoHacksPanel.add(videoHacksJComboBoxes.get(i));
         }
     }
 
     private void addToVideoHardwarePanel(JPanel videoHardwarePanel) {
-        videoHardwareLabel = new JLabel(ConfigNames.videoHardwareOption[0]);
+        videoHardwareLabel = new JLabel(ConfigNames.VIDEO_HARDWARE_OPTION[0]);
         videoHardwarePanel.add(videoHardwareLabel);
-        videoHardwareJComboBox = new JComboBox(ConfigOptions.trueFalseOptions);
+        videoHardwareJComboBox = new JComboBox(ConfigOptions.TRUE_FALSE_OPTIONS);
         videoHardwarePanel.add(videoHardwareJComboBox);
     }
 
     private void addToDSPAudioPanel(JPanel dspAudioPanel) {
-        dspAudioLabel = new JLabel(ConfigNames.dspAudioOption[0]);
+        dspAudioLabel = new JLabel(ConfigNames.DSP_AUDIO_OPTION[0]);
         dspAudioPanel.add(dspAudioLabel);
         dspAudioVolumeSlider = new JSlider(0, 100, 100);
         dspAudioVolumeSlider.setMajorTickSpacing(10);
@@ -240,10 +240,10 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     }
 
     private void addToWiiPanel(JPanel wiiPanel) {
-        for (int i=0; i<ConfigNames.wiiOptions.length; i++) {
-            wiiJLabels.add(new JLabel(ConfigNames.wiiOptions[i]));
+        for (int i = 0; i<ConfigNames.WII_OPTIONS.length; i++) {
+            wiiJLabels.add(new JLabel(ConfigNames.WII_OPTIONS[i]));
             wiiPanel.add(wiiJLabels.get(i));
-            wiiJComboBoxes.add(new JComboBox(getAppropriateWiiOptions(ConfigNames.wiiOptions[i])));
+            wiiJComboBoxes.add(new JComboBox(getAppropriateWiiOptions(ConfigNames.WII_OPTIONS[i])));
             wiiPanel.add(wiiJComboBoxes.get(i));
         }
     }
@@ -253,11 +253,11 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         int textFieldIndex = 0;
         int jComboBoxesAdded = 0;
 
-        for (int i=0; i<ConfigNames.controlOptions.length; i++) {
-            controlJLabels.add(new JLabel(ConfigNames.controlOptions[i]));
+        for (int i = 0; i<ConfigNames.CONTROL_OPTIONS.length; i++) {
+            controlJLabels.add(new JLabel(ConfigNames.CONTROL_OPTIONS[i]));
             controlPanel.add(controlJLabels.get(i));
-            if (!isProfileOption(ConfigNames.controlOptions[i])) {
-                controlJComboBoxes.add(new JComboBox(getAppropriateControlOptions(ConfigNames.controlOptions[i])));
+            if (!isProfileOption(ConfigNames.CONTROL_OPTIONS[i])) {
+                controlJComboBoxes.add(new JComboBox(getAppropriateControlOptions(ConfigNames.CONTROL_OPTIONS[i])));
                 controlPanel.add(controlJComboBoxes.get(jComboBoxesAdded));
                 jComboBoxesAdded++;
             }
@@ -274,76 +274,76 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private String[] getAppropriateCoreOptions(String coreOption) {
         if (coreOption.equals("Graphics Backend")) {
-            return ConfigOptions.graphicBackends;
+            return ConfigOptions.GRAPHIC_BACKENDS;
         }
         else if (coreOption.equals("CPU Emulator Engine")) {
-            return ConfigOptions.cpuEmulatorEngine;
+            return ConfigOptions.CPU_EMULATOR_ENGINE;
         }
         else if (coreOption.equals("Emulation Speed")) {
-            return ConfigOptions.emulationSpeeds;
+            return ConfigOptions.EMULATION_SPEEDS;
         }
         else if (coreOption.equals("CPU Overclock") || coreOption.equals("GPU Overclock")) {
-            return ConfigOptions.overClockSpeeds;
+            return ConfigOptions.OVER_CLOCK_SPEEDS;
         }
         else if (coreOption.equals("GameCube Language")) {
-            return ConfigOptions.gameCubeLanguage;
+            return ConfigOptions.GAMECUBE_LANGUAGE;
         }
         else if (coreOption.equals("GameCube Slot A") || coreOption.equals("GameCube Slot B")) {
-            return ConfigOptions.gameCubeSlot;
+            return ConfigOptions.GAMECUBE_SLOT;
         }
         else if (coreOption.equals("GameCube Serial Port")) {
-            return ConfigOptions.gameCubeSerialPort;
+            return ConfigOptions.GAMECUBE_SERIAL_PORT;
         }
         else {
-            return ConfigOptions.trueFalseOptions;
+            return ConfigOptions.TRUE_FALSE_OPTIONS;
         }
     }
 
     private String[] getAppropriateVideoSettingsOptions(String videoSettingOption) {
         if (videoSettingOption.equals("Internal Resolution")) {
-            return ConfigOptions.internalResolutions;
+            return ConfigOptions.INTERNAL_RESOLUTIONS;
         }
         else if (videoSettingOption.equals("Shader Compilation")) {
-            return ConfigOptions.shaderCompilationMethods;
+            return ConfigOptions.SHADER_COMPILATION_METHODS;
         }
         else if (videoSettingOption.equals("Texture Cache Accuracy")) {
-            return ConfigOptions.textureCacheAccuracies;
+            return ConfigOptions.TEXTURE_CACHE_ACCURACIES;
         }
         else if (videoSettingOption.equals("Aspect Ratio")) {
-            return ConfigOptions.aspectRatios;
+            return ConfigOptions.ASPECT_RATIOS;
         }
         else if (videoSettingOption.equals("Anti-Aliasing")) {
-            return ConfigOptions.antiAliasing;
+            return ConfigOptions.ANTI_ALIASING;
         }
         else if (videoSettingOption.equals("Anti-Aliasing Method")) {
-            return ConfigOptions.antiAliasingMethods;
+            return ConfigOptions.ANTI_ALIASING_METHODS;
         }
         else {
-            return ConfigOptions.trueFalseOptions;
+            return ConfigOptions.TRUE_FALSE_OPTIONS;
         }
     }
 
     private String[] getAppropriateVideoEnhancementOptions(String videoEnhancementOption) {
         if (videoEnhancementOption.equals("Anisotropic Filtering")) {
-            return ConfigOptions.anisotropicFiltering;
+            return ConfigOptions.ANISOTROPIC_FILTERING;
         }
         else if (videoEnhancementOption.equals("Force Texture Filtering")) {
-            return ConfigOptions.textureFiltering;
+            return ConfigOptions.TEXTURE_FILTERING;
         }
         else {
-            return ConfigOptions.trueFalseOptions;
+            return ConfigOptions.TRUE_FALSE_OPTIONS;
         }
     }
 
     private String[] getAppropriateWiiOptions(String wiiOption) {
         if (wiiOption.equals("Wii Language")) {
-            return ConfigOptions.wiiLanguage;
+            return ConfigOptions.WII_LANGUAGE;
         }
         else if (wiiOption.equals("Wii Aspect Ratio")) {
-            return ConfigOptions.wiiAspectRatio;
+            return ConfigOptions.WII_ASPECT_RATIO;
         }
         else {
-            return ConfigOptions.trueFalseOptions;
+            return ConfigOptions.TRUE_FALSE_OPTIONS;
         }
     }
 
@@ -352,16 +352,16 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                 || controlOption.equals("GameCube Controller Port 2")
                 || controlOption.equals("GameCube Controller Port 3")
                 || controlOption.equals("GameCube Controller Port 4")) {
-            return ConfigOptions.gameCubeControllerTypes;
+            return ConfigOptions.GAMECUBE_CONTROLLER_TYPES;
         }
         else if (controlOption.equals("Wii Remote 1")
                 || controlOption.equals("Wii Remote 2")
                 || controlOption.equals("Wii Remote 3")
                 || controlOption.equals("Wii Remote 4")) {
-            return ConfigOptions.wiiControllerTypes;
+            return ConfigOptions.WII_CONTROLLER_TYPES;
         }
         else {
-            return ConfigOptions.trueFalseOptions;
+            return ConfigOptions.TRUE_FALSE_OPTIONS;
         }
     }
 
@@ -450,9 +450,9 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         for (int i=0; i<controlJLabels.size(); i++) {
 
             if (translatedINISetting.equals(controlJLabels.get(i).getText())) {
-                if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+                if (isInArray(translatedINISetting, DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES)) {
                     int index = getIndexOfDifferingSetting(translatedINISetting);
-                    String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                    String[] iniConfigOptions = DifferingINIConfigOptions.DIFFERING_INI_CONFIG_OPTIONS[index];
                     int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
                     controlJComboBoxes.get(comboBoxIndex).setSelectedIndex(indexToSetTo);
                 }
@@ -472,9 +472,9 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private void setUIElement(ArrayList<JLabel> jLabels, ArrayList<JComboBox> comboBoxes, String translatedINISetting, String settingValue, int i) {
         if (translatedINISetting.equals(jLabels.get(i).getText())) {
-            if (isInArray(translatedINISetting, DifferingINIConfigOptions.differentConfigOptionNames)) {
+            if (isInArray(translatedINISetting, DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES)) {
                 int index = getIndexOfDifferingSetting(translatedINISetting);
-                String[] iniConfigOptions = DifferingINIConfigOptions.differingINIConfigOptions[index];
+                String[] iniConfigOptions = DifferingINIConfigOptions.DIFFERING_INI_CONFIG_OPTIONS[index];
                 int indexToSetTo = getIndexToSetTo(settingValue, iniConfigOptions);
                 comboBoxes.get(i).setSelectedIndex(indexToSetTo);
             }
@@ -511,8 +511,8 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     }
 
     private int getIndexOfDifferingSetting(String differingSetting) {
-        for (int i=0; i<DifferingINIConfigOptions.differentConfigOptionNames.length; i++) {
-            if (differingSetting.equals(DifferingINIConfigOptions.differentConfigOptionNames[i])) {
+        for (int i = 0; i<DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES.length; i++) {
+            if (differingSetting.equals(DifferingINIConfigOptions.DIFFERENT_CONFIG_OPTION_NAMES[i])) {
                 return i;
             }
         }
@@ -584,51 +584,51 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private String getTranslatedSetting(String iniSetting) {
 
-        for (int i=0; i<INIConfigNames.INICoreOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INICoreOptions[i])) {
-                return ConfigNames.coreOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_CORE_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_CORE_OPTIONS[i])) {
+                return ConfigNames.CORE_OPTIONS[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIVideoSettingsOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIVideoSettingsOptions[i])) {
-                return ConfigNames.videoSettingsOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS[i])) {
+                return ConfigNames.VIDEO_SETTINGS_OPTIONS[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIVideoEnhancementsOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIVideoEnhancementsOptions[i])) {
-                return ConfigNames.videoEnhancementsOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS[i])) {
+                return ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIVideoHacksOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIVideoHacksOptions[i])) {
-                return ConfigNames.videoHacksOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_VIDEO_HACKS_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_VIDEO_HACKS_OPTIONS[i])) {
+                return ConfigNames.VIDEO_HACKS_OPTIONS[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIVideoHardwareOption.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIVideoHardwareOption[i])) {
-                return ConfigNames.videoHardwareOption[i];
+        for (int i = 0; i<INIConfigNames.INI_VIDEO_HARDWARE_OPTION.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_VIDEO_HARDWARE_OPTION[i])) {
+                return ConfigNames.VIDEO_HARDWARE_OPTION[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIDspAudioOption.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIDspAudioOption[i])) {
-                return ConfigNames.dspAudioOption[i];
+        for (int i = 0; i<INIConfigNames.INI_DSP_AUDIO_OPTION.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_DSP_AUDIO_OPTION[i])) {
+                return ConfigNames.DSP_AUDIO_OPTION[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIWiiOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIWiiOptions[i])) {
-                return ConfigNames.wiiOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_WII_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_WII_OPTIONS[i])) {
+                return ConfigNames.WII_OPTIONS[i];
             }
         }
 
-        for (int i=0; i<INIConfigNames.INIControlOptions.length; i++) {
-            if (iniSetting.equals(INIConfigNames.INIControlOptions[i])) {
-                return ConfigNames.controlOptions[i];
+        for (int i = 0; i<INIConfigNames.INI_CONTROL_OPTIONS.length; i++) {
+            if (iniSetting.equals(INIConfigNames.INI_CONTROL_OPTIONS[i])) {
+                return ConfigNames.CONTROL_OPTIONS[i];
             }
         }
 

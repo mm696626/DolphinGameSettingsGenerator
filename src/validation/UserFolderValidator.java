@@ -16,26 +16,26 @@ public class UserFolderValidator {
             }
         }
 
-        return validFolders >= UserFolderFolders.latestBetaFolders.length
-                || validFolders >= UserFolderFolders.latestStableFolders.length
-                || validFolders >= UserFolderFolders.bareMinimumFolders.length;
+        return validFolders >= UserFolderFolders.LATEST_BETA_FOLDERS.length
+                || validFolders >= UserFolderFolders.LATEST_STABLE_FOLDERS.length
+                || validFolders >= UserFolderFolders.BARE_MINIMUM_FOLDERS.length;
     }
 
     private boolean isFolderNameValid(String folderName) {
-        for (int i=0; i< UserFolderFolders.latestBetaFolders.length; i++) {
-            if (folderName.equalsIgnoreCase(UserFolderFolders.latestBetaFolders[i])) {
+        for (int i = 0; i< UserFolderFolders.LATEST_BETA_FOLDERS.length; i++) {
+            if (folderName.equalsIgnoreCase(UserFolderFolders.LATEST_BETA_FOLDERS[i])) {
                 return true;
             }
         }
 
-        for (int i=0; i< UserFolderFolders.latestStableFolders.length; i++) {
-            if (folderName.equalsIgnoreCase(UserFolderFolders.latestStableFolders[i])) {
+        for (int i = 0; i< UserFolderFolders.LATEST_STABLE_FOLDERS.length; i++) {
+            if (folderName.equalsIgnoreCase(UserFolderFolders.LATEST_STABLE_FOLDERS[i])) {
                 return true;
             }
         }
 
-        for (int i=0; i< UserFolderFolders.bareMinimumFolders.length; i++) {
-            if (folderName.equalsIgnoreCase(UserFolderFolders.bareMinimumFolders[i])) {
+        for (int i = 0; i< UserFolderFolders.BARE_MINIMUM_FOLDERS.length; i++) {
+            if (folderName.equalsIgnoreCase(UserFolderFolders.BARE_MINIMUM_FOLDERS[i])) {
                 return true;
             }
         }
