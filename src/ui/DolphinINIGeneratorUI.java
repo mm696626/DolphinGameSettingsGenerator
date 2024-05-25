@@ -20,12 +20,12 @@ import java.util.Scanner;
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
-    private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoSyncUserFolderPath;
-    private JLabel useCoverArtLabel, autoSyncEnabledLabel, autoSyncUserFolderPathLabel;
-    private JCheckBox useCoverArt, autoSyncEnabled;
+    private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoMoveUserFolderPath;
+    private JLabel useCoverArtLabel, autoMoveEnabledLabel, autoMoveUserFolderPathLabel;
+    private JCheckBox useCoverArt, autoMoveEnabled;
     private String userFolderPath = "";
-    private String autoSyncUserFolderPath = "";
-    private JTextField autoSyncUserFolderPathField;
+    private String autoMoveUserFolderPath = "";
+    private JTextField autoMoveUserFolderPathField;
 
 
     private ArrayList<JPanel> jPanels = new ArrayList<>();
@@ -66,36 +66,36 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         moveGameSettingsToUserFolder.addActionListener(this);
 
         //game settings panel
-        autoSyncUserFolderPathLabel = new JLabel("Auto Sync User Folder Path");
+        autoMoveUserFolderPathLabel = new JLabel("Auto Move User Folder Path");
 
-        autoSyncUserFolderPathField = new JTextField(10);
-        autoSyncUserFolderPathField.setEditable(false);
+        autoMoveUserFolderPathField = new JTextField(10);
+        autoMoveUserFolderPathField.setEditable(false);
 
-        browseForAutoSyncUserFolderPath = new JButton("Browse");
-        browseForAutoSyncUserFolderPath.addActionListener(this);
+        browseForAutoMoveUserFolderPath = new JButton("Browse");
+        browseForAutoMoveUserFolderPath.addActionListener(this);
 
         //purely for UI padding so the other options are in the correct spots
         JLabel paddingJLabel = new JLabel("");
 
-        autoSyncEnabledLabel = new JLabel("Auto Sync Enabled");
-        autoSyncEnabled = new JCheckBox();
+        autoMoveEnabledLabel = new JLabel("Auto Move Enabled");
+        autoMoveEnabled = new JCheckBox();
 
         useCoverArtLabel = new JLabel("Use Cover Art for Editing INI UI");
         useCoverArt = new JCheckBox();
 
-        autoSyncEnabled.addActionListener (e -> updateGeneratorSettings());
+        autoMoveEnabled.addActionListener (e -> updateGeneratorSettings());
         useCoverArt.addActionListener (e -> updateGeneratorSettings());
 
         mainMenuPanel.add(pickGame);
         mainMenuPanel.add(editINI);
         mainMenuPanel.add(moveGameSettingsToUserFolder);
 
-        generatorSettingsPanel.add(autoSyncUserFolderPathLabel);
-        generatorSettingsPanel.add(autoSyncUserFolderPathField);
-        generatorSettingsPanel.add(browseForAutoSyncUserFolderPath);
+        generatorSettingsPanel.add(autoMoveUserFolderPathLabel);
+        generatorSettingsPanel.add(autoMoveUserFolderPathField);
+        generatorSettingsPanel.add(browseForAutoMoveUserFolderPath);
         generatorSettingsPanel.add(paddingJLabel);
-        generatorSettingsPanel.add(autoSyncEnabledLabel);
-        generatorSettingsPanel.add(autoSyncEnabled);
+        generatorSettingsPanel.add(autoMoveEnabledLabel);
+        generatorSettingsPanel.add(autoMoveEnabled);
         generatorSettingsPanel.add(useCoverArtLabel);
         generatorSettingsPanel.add(useCoverArt);
 
@@ -153,15 +153,15 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() ==  browseForAutoSyncUserFolderPath) {
+        if (e.getSource() == browseForAutoMoveUserFolderPath) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int response = fileChooser.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
-                autoSyncUserFolderPath = fileChooser.getSelectedFile().getAbsolutePath();
+                autoMoveUserFolderPath = fileChooser.getSelectedFile().getAbsolutePath();
                 UserFolderValidator userFolderValidator = new UserFolderValidator();
-                if (userFolderValidator.isValidUserFolder(autoSyncUserFolderPath)) {
-                    autoSyncUserFolderPathField.setText(autoSyncUserFolderPath);
+                if (userFolderValidator.isValidUserFolder(autoMoveUserFolderPath)) {
+                    autoMoveUserFolderPathField.setText(autoMoveUserFolderPath);
                     updateGeneratorSettings();
                 }
                 else {
@@ -184,9 +184,9 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
             System.exit(0);
         }
 
-        outputStream.println(GeneratorSettings.AUTO_SYNC_PATH + ":" + autoSyncUserFolderPathField.getText().trim());
-        outputStream.println(GeneratorSettings.AUTO_SYNC_ENABLED + ":" + autoSyncEnabled.isSelected());
-        outputStream.println(GeneratorSettings.USE_COVER_ART + ":" + useCoverArt.isSelected());
+        outputStream.println(GeneratorSettings.AUTO_MOVE_PATH + "=" + autoMoveUserFolderPathField.getText().trim());
+        outputStream.println(GeneratorSettings.AUTO_MOVE_ENABLED + "=" + autoMoveEnabled.isSelected());
+        outputStream.println(GeneratorSettings.USE_COVER_ART + "=" + useCoverArt.isSelected());
         outputStream.close();
     }
 
@@ -201,23 +201,23 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         while (inputStream.hasNextLine()) {
             String line = inputStream.nextLine();
 
-            if (line.contains(GeneratorSettings.AUTO_SYNC_ENABLED)) {
-                String settingValue = line.split(":")[1];
-                autoSyncEnabled.setSelected(Boolean.parseBoolean(settingValue));
+            if (line.contains(GeneratorSettings.AUTO_MOVE_ENABLED)) {
+                String settingValue = line.split("=")[1];
+                autoMoveEnabled.setSelected(Boolean.parseBoolean(settingValue));
             }
 
-            else if (line.contains(GeneratorSettings.AUTO_SYNC_PATH)) {
-                String[] lineParts = line.split(":");
+            else if (line.contains(GeneratorSettings.AUTO_MOVE_PATH)) {
+                String[] lineParts = line.split("=");
                 if (lineParts.length > 1) {
-                    autoSyncUserFolderPathField.setText(lineParts[1]);
+                    autoMoveUserFolderPathField.setText(lineParts[1]);
                 }
                 else {
-                    autoSyncUserFolderPathField.setText("");
+                    autoMoveUserFolderPathField.setText("");
                 }
             }
 
             else if (line.contains(GeneratorSettings.USE_COVER_ART)) {
-                String settingValue = line.split(":")[1];
+                String settingValue = line.split("=")[1];
                 useCoverArt.setSelected(Boolean.parseBoolean(settingValue));
             }
         }

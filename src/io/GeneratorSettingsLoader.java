@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class GeneratorSettingsLoader {
 
-    public boolean getAutoSyncEnabled() {
+    public boolean getAutoMoveEnabled() {
         Scanner inputStream = null;
         try {
             inputStream = new Scanner(new FileInputStream("generatorSettings.txt"));
@@ -19,8 +19,8 @@ public class GeneratorSettingsLoader {
         while (inputStream.hasNextLine()) {
             String line = inputStream.nextLine();
 
-            if (line.contains(GeneratorSettings.AUTO_SYNC_ENABLED)) {
-                String settingValue = line.split(":")[1];
+            if (line.contains(GeneratorSettings.AUTO_MOVE_ENABLED)) {
+                String settingValue = line.split("=")[1];
                 inputStream.close();
                 return Boolean.parseBoolean(settingValue);
             }
@@ -30,7 +30,7 @@ public class GeneratorSettingsLoader {
         return false;
     }
 
-    public String getAutoSyncPath() {
+    public String getAutoMovePath() {
         Scanner inputStream = null;
         try {
             inputStream = new Scanner(new FileInputStream("generatorSettings.txt"));
@@ -41,8 +41,8 @@ public class GeneratorSettingsLoader {
         while (inputStream.hasNextLine()) {
             String line = inputStream.nextLine();
 
-            if (line.contains(GeneratorSettings.AUTO_SYNC_PATH)) {
-                String[] lineParts = line.split(":");
+            if (line.contains(GeneratorSettings.AUTO_MOVE_PATH)) {
+                String[] lineParts = line.split("=");
                 inputStream.close();
                 if (lineParts.length > 1) {
                     return lineParts[1];
@@ -69,7 +69,7 @@ public class GeneratorSettingsLoader {
             String line = inputStream.nextLine();
 
             if (line.contains(GeneratorSettings.USE_COVER_ART)) {
-                String settingValue = line.split(":")[1];
+                String settingValue = line.split("=")[1];
                 inputStream.close();
                 return Boolean.parseBoolean(settingValue);
             }

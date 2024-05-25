@@ -69,10 +69,10 @@ public class GameSettingINISaver {
         outputStream.close();
 
         GeneratorSettingsLoader generatorSettingsLoader = new GeneratorSettingsLoader();
-        String autoSyncPath = generatorSettingsLoader.getAutoSyncPath();
+        String autoMovePath = generatorSettingsLoader.getAutoMovePath();
 
-        if (generatorSettingsLoader.getAutoSyncEnabled() && !autoSyncPath.isEmpty()) {
-            File userFolder = new File(autoSyncPath);
+        if (generatorSettingsLoader.getAutoMoveEnabled() && !autoMovePath.isEmpty()) {
+            File userFolder = new File(autoMovePath);
             if (userFolder.exists()) {
                 String gameSettingsPath = userFolder.getAbsolutePath();
                 File userFolderGameSettingsFolder = new File(gameSettingsPath + filePathSeparator + "GameSettings");
