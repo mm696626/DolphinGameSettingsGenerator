@@ -9,11 +9,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
@@ -37,6 +39,11 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
         setTitle("Dolphin Emulator INI Generator");
         generateUI();
+
+        File generatorSettings = new File("generatorSettings.txt");
+        if (generatorSettings.exists()) {
+            loadSettingsOnStartUp();
+        }
     }
 
     private void generateUI() {
@@ -169,7 +176,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
     private void updateGeneratorSettings() {
         PrintWriter outputStream = null;
 
-        try{
+        try {
             outputStream = new PrintWriter( new FileOutputStream("generatorSettings.txt"));
         }
         catch (FileNotFoundException f) {
@@ -181,5 +188,40 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         outputStream.println(GeneratorSettings.AUTO_SYNC_ENABLED + ":" + autoSyncEnabled.isSelected());
         outputStream.println(GeneratorSettings.USE_COVER_ART + ":" + useCoverArt.isSelected());
         outputStream.close();
+    }
+
+    private void loadSettingsOnStartUp() {
+        Scanner inputStream = null;
+        try {
+            inputStream = new Scanner(new FileInputStream("generatorSettings.txt"));
+        } catch (FileNotFoundException e) {
+            return;
+        }
+
+        while (inputStream.hasNextLine()) {
+            String line = inputStream.nextLine();
+
+            if (line.contains(GeneratorSettings.AUTO_SYNC_ENABLED)) {
+                String settingValue = line.split(":")[1];
+                autoSyncEnabled.setSelected(Boolean.parseBoolean(settingValue));
+            }
+
+            else if (line.contains(GeneratorSettings.AUTO_SYNC_PATH)) {
+                String[] lineParts = line.split(":");
+                if (lineParts.length > 1) {
+                    autoSyncUserFolderPathField.setText(lineParts[1]);
+                }
+                else {
+                    autoSyncUserFolderPathField.setText("");
+                }
+            }
+
+            else if (line.contains(GeneratorSettings.USE_COVER_ART)) {
+                String settingValue = line.split(":")[1];
+                useCoverArt.setSelected(Boolean.parseBoolean(settingValue));
+            }
+        }
+
+        inputStream.close();
     }
 }

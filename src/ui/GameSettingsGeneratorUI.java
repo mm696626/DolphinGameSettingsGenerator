@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -91,7 +92,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             try {
                 gameSettingINISaver.saveINI(tempSettingsFile, iniFilePath, otherLines);
-            } catch (FileNotFoundException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
 
@@ -535,7 +536,6 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         }
 
         inputStream.close();
-
         return lines;
     }
 

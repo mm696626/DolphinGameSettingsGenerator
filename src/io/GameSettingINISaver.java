@@ -8,7 +8,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,7 +24,7 @@ public class GameSettingINISaver {
         this.gameID = gameID;
     }
 
-    public void saveINI(File tempSettingsFile, String iniFilePath, ArrayList<String> otherLines) throws FileNotFoundException {
+    public void saveINI(File tempSettingsFile, String iniFilePath, ArrayList<String> otherLines) throws IOException {
         PrintWriter outputStream = null;
 
         //pass in temp settings file to use file path to save to folder
@@ -35,19 +38,22 @@ public class GameSettingINISaver {
             gameSettingsFolder.mkdirs();
         }
 
+        String iniSaveDirectory = "";
+
         if (gameID == null) {
             outputStream = new PrintWriter(iniFilePath);
+            iniSaveDirectory = iniFilePath;
         }
         else {
             try {
                 outputStream = new PrintWriter(new FileOutputStream(settingsFilePathFolder + filePathSeparator + "GameSettings" + filePathSeparator + gameID + ".ini"));
+                iniSaveDirectory = settingsFilePathFolder + filePathSeparator + "GameSettings" + filePathSeparator + gameID + ".ini";
             }
             catch (FileNotFoundException f) {
                 System.out.println("File does not exist");
                 System.exit(0);
             }
         }
-
 
         settingsBlocks = getSettingsBlocks();
 
@@ -61,6 +67,20 @@ public class GameSettingINISaver {
         }
 
         outputStream.close();
+
+        GeneratorSettingsLoader generatorSettingsLoader = new GeneratorSettingsLoader();
+        String autoSyncPath = generatorSettingsLoader.getAutoSyncPath();
+
+        if (generatorSettingsLoader.getAutoSyncEnabled() && !autoSyncPath.isEmpty()) {
+            File userFolder = new File(autoSyncPath);
+            if (userFolder.exists()) {
+                String gameSettingsPath = userFolder.getAbsolutePath();
+                File userFolderGameSettingsFolder = new File(gameSettingsPath + filePathSeparator + "GameSettings");
+                File iniFile = new File(iniSaveDirectory);
+                File copiedSettingsFile = new File(userFolderGameSettingsFolder.getAbsolutePath() + filePathSeparator + iniFile.getName());
+                Files.copy(iniFile.toPath(), copiedSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+            }
+        }
     }
 
     private ArrayList<String> getSettingsBlocks() {
@@ -86,6 +106,7 @@ public class GameSettingINISaver {
             }
         }
 
+        inputStream.close();
         return settingsBlocks;
     }
 

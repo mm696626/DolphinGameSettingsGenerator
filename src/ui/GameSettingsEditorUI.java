@@ -1,5 +1,6 @@
 package ui;
 
+import io.GeneratorSettingsLoader;
 import validation.ExtensionValidator;
 
 import javax.swing.*;
@@ -225,8 +226,10 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
 
         gameID = gameID.substring(0, gameID.lastIndexOf("."));
 
+        GeneratorSettingsLoader generatorSettingsLoader = new GeneratorSettingsLoader();
+
         File image = new File(coversFolder + filePathSeparator + gameID + ".png");
-        if (image.exists()) {
+        if (image.exists() && generatorSettingsLoader.getUseCoverArt()) {
             return new ImageIcon(coversFolder + filePathSeparator + gameID + ".png");
         }
         else {
