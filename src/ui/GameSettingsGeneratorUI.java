@@ -56,6 +56,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     private ArrayList<String> otherLines = new ArrayList<>();
     private ArrayList<String> iniSettings = new ArrayList<>();
     private ArrayList<String> iniSettingsValues = new ArrayList<>();
+    private ArrayList<String> coreOtherLines = new ArrayList<>();
+    private ArrayList<String> videoSettingsOtherLines = new ArrayList<>();
+    private ArrayList<String> videoEnhancementsOtherLines = new ArrayList<>();
+    private ArrayList<String> videoHacksOtherLines = new ArrayList<>();
+    private ArrayList<String> videoHardwareOtherLines = new ArrayList<>();
+    private ArrayList<String> dspOtherLines = new ArrayList<>();
+    private ArrayList<String> wiiOtherLines = new ArrayList<>();
+    private ArrayList<String> controlsOtherLines = new ArrayList<>();
     private String[] supportedCategories = {"[Core]", "[Video_Settings]","[Video_Enhancements]", "[Video_Hacks]","[Video_Hardware]","[DSP]","[Wii]","[Controls]"};
 
 
@@ -91,7 +99,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             try {
-                gameSettingINISaver.saveINI(tempSettingsFile, iniFilePath, otherLines);
+                gameSettingINISaver.saveINI(isEditing, tempSettingsFile, iniFilePath, otherLines, coreOtherLines, videoSettingsOtherLines, videoEnhancementsOtherLines, videoHacksOtherLines, videoHardwareOtherLines, dspOtherLines, wiiOtherLines, controlsOtherLines);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -541,14 +549,20 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private void getINISettings(ArrayList<String> iniLines) {
        boolean isValidBlock = false;
+       String blockName = "";
 
         for (int i=0; i<iniLines.size(); i++) {
             String iniLine = iniLines.get(i);
             if (!iniLine.contains("[") && !iniLine.contains("OverclockEnable") && isValidBlock) {
                 String iniSettingName = iniLine.split("=")[0];
                 String iniSettingValue = iniLine.split("=")[1];
-                iniSettings.add(iniSettingName);
-                iniSettingsValues.add(iniSettingValue);
+                if (isSettingSupported(blockName, iniSettingName.trim())) {
+                    iniSettings.add(iniSettingName);
+                    iniSettingsValues.add(iniSettingValue);
+                }
+                else {
+                    addToBlockOtherLines(blockName, iniLine);
+                }
             }
             else if (iniLine.contains("[")) {
                 isValidBlock = false;
@@ -556,6 +570,7 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                 for (int index=0; index<supportedCategories.length; index++) {
                     if (iniLine.equals(supportedCategories[index])) {
                         isValidBlock = true;
+                        blockName = supportedCategories[index];
                         break;
                     }
                 }
@@ -567,6 +582,64 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             else {
                 otherLines.add(iniLine);
             }
+        }
+    }
+
+    private boolean isSettingSupported(String blockName, String settingName) {
+
+        if (blockName.equals("[Core]")) {
+            return isInArray(settingName, INIConfigNames.INI_CORE_OPTIONS);
+        }
+        else if (blockName.equals("[Video_Settings]")) {
+            return isInArray(settingName, INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS);
+        }
+        else if (blockName.equals("[Video_Enhancements]")) {
+            return isInArray(settingName, INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS);
+        }
+        else if (blockName.equals("[Video_Hacks]")) {
+            return isInArray(settingName, INIConfigNames.INI_VIDEO_HACKS_OPTIONS);
+        }
+        else if (blockName.equals("[Video_Hardware]")) {
+            return isInArray(settingName, INIConfigNames.INI_VIDEO_HARDWARE_OPTION);
+        }
+        else if (blockName.equals("[DSP]")) {
+            return isInArray(settingName, INIConfigNames.INI_DSP_AUDIO_OPTION);
+        }
+        else if (blockName.equals("[Wii]")) {
+            return isInArray(settingName, INIConfigNames.INI_WII_OPTIONS);
+        }
+        else if (blockName.equals("[Controls]")) {
+            return isInArray(settingName, INIConfigNames.INI_CONTROL_OPTIONS);
+        }
+
+        return false;
+    }
+
+    private void addToBlockOtherLines(String blockName, String iniLine) {
+
+        if (blockName.equals("[Core]")) {
+            coreOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Video_Settings]")) {
+            videoSettingsOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Video_Enhancements]")) {
+            videoEnhancementsOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Video_Hacks]")) {
+            videoHacksOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Video_Hardware]")) {
+            videoHardwareOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[DSP]")) {
+            dspOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Wii]")) {
+            wiiOtherLines.add(iniLine);
+        }
+        else if (blockName.equals("[Controls]")) {
+            controlsOtherLines.add(iniLine);
         }
     }
 

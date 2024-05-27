@@ -19,12 +19,20 @@ public class GameSettingINISaver {
 
     private String gameID = "";
     private ArrayList<String> settingsBlocks = new ArrayList<>();
+    private ArrayList<String> coreOtherLines;
+    private ArrayList<String> videoSettingsOtherLines;
+    private ArrayList<String> videoEnhancementsOtherLines;
+    private ArrayList<String> videoHacksOtherLines;
+    private ArrayList<String> videoHardwareOtherLines;
+    private ArrayList<String> dspOtherLines;
+    private ArrayList<String> wiiOtherLines;
+    private ArrayList<String> controlsOtherLines;
 
     public GameSettingINISaver(String gameID) {
         this.gameID = gameID;
     }
 
-    public void saveINI(File tempSettingsFile, String iniFilePath, ArrayList<String> otherLines) throws IOException {
+    public void saveINI(boolean isEditing, File tempSettingsFile, String iniFilePath, ArrayList<String> otherLines, ArrayList<String> coreOtherLines, ArrayList<String> videoSettingsOtherLines, ArrayList<String> videoEnhancementsOtherLines, ArrayList<String> videoHacksOtherLines, ArrayList<String> videoHardwareOtherLines, ArrayList<String> dspOtherLines, ArrayList<String> wiiOtherLines, ArrayList<String> controlsOtherLines) throws IOException {
         PrintWriter outputStream = null;
 
         //pass in temp settings file to use file path to save to folder
@@ -57,13 +65,88 @@ public class GameSettingINISaver {
 
         settingsBlocks = getSettingsBlocks();
 
+        this.coreOtherLines = coreOtherLines;
+        this.videoSettingsOtherLines = videoSettingsOtherLines;
+        this.videoEnhancementsOtherLines = videoEnhancementsOtherLines;
+        this.videoHacksOtherLines = videoHacksOtherLines;
+        this.videoHardwareOtherLines = videoHardwareOtherLines;
+        this.dspOtherLines = dspOtherLines;
+        this.wiiOtherLines = wiiOtherLines;
+        this.controlsOtherLines = controlsOtherLines;
+
         for (int i=0; i<settingsBlocks.size(); i++) {
             String iniSettingsForSettingBlock = runAppropriateSettingBlock(settingsBlocks.get(i));
             outputStream.print(iniSettingsForSettingBlock);
         }
 
-        for (int i=0; i<otherLines.size(); i++) {
-            outputStream.println(otherLines.get(i));
+        if (isEditing) {
+            if (!isInArrayList("[Core]", settingsBlocks) && !coreOtherLines.isEmpty())  {
+                outputStream.println("[Core]");
+
+                for (int i=0; i<coreOtherLines.size(); i++) {
+                    outputStream.println(coreOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Video_Settings]", settingsBlocks) && !videoSettingsOtherLines.isEmpty())  {
+                outputStream.println("[Video_Settings]");
+
+                for (int i=0; i<videoSettingsOtherLines.size(); i++) {
+                    outputStream.println(videoSettingsOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Video_Enhancements]", settingsBlocks) && !videoEnhancementsOtherLines.isEmpty())  {
+                outputStream.println("[Video_Enhancements]");
+
+                for (int i=0; i<videoEnhancementsOtherLines.size(); i++) {
+                    outputStream.println(videoEnhancementsOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Video_Hacks]", settingsBlocks) && !videoHacksOtherLines.isEmpty())  {
+                outputStream.println("[Video_Hacks]");
+
+                for (int i=0; i<videoHacksOtherLines.size(); i++) {
+                    outputStream.println(videoHacksOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Video_Hardware]", settingsBlocks) && !videoHardwareOtherLines.isEmpty())  {
+                outputStream.println("[Video_Hardware]");
+
+                for (int i=0; i<videoHardwareOtherLines.size(); i++) {
+                    outputStream.println(videoHardwareOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[DSP]", settingsBlocks) && !dspOtherLines.isEmpty())  {
+                outputStream.println("[DSP]");
+
+                for (int i=0; i<dspOtherLines.size(); i++) {
+                    outputStream.println(dspOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Wii]", settingsBlocks) && !wiiOtherLines.isEmpty())  {
+                outputStream.println("[Wii]");
+
+                for (int i=0; i<wiiOtherLines.size(); i++) {
+                    outputStream.println(wiiOtherLines.get(i));
+                }
+            }
+
+            if (!isInArrayList("[Controls]", settingsBlocks) && !controlsOtherLines.isEmpty())  {
+                outputStream.println("[Controls]");
+
+                for (int i=0; i<controlsOtherLines.size(); i++) {
+                    outputStream.println(controlsOtherLines.get(i));
+                }
+            }
+
+            for (int i=0; i<otherLines.size(); i++) {
+                outputStream.println(otherLines.get(i));
+            }
         }
 
         outputStream.close();
@@ -81,6 +164,16 @@ public class GameSettingINISaver {
                 Files.copy(iniFile.toPath(), copiedSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
             }
         }
+    }
+
+    private boolean isInArrayList(String string, ArrayList<String> arrayList) {
+        for (int i=0; i<arrayList.size(); i++) {
+            if (arrayList.get(i).contains(string)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private ArrayList<String> getSettingsBlocks() {
@@ -114,41 +207,50 @@ public class GameSettingINISaver {
         String settingBlockHeader = settingBlock.split("\n")[0];
 
         if (settingBlockHeader.equals("[Core]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CORE_OPTIONS, INIConfigNames.INI_CORE_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CORE_OPTIONS, INIConfigNames.INI_CORE_OPTIONS) + addOtherLinesToBlock(coreOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Video_Settings]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_SETTINGS_OPTIONS, INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_SETTINGS_OPTIONS, INIConfigNames.INI_VIDEO_SETTINGS_OPTIONS) + addOtherLinesToBlock(videoSettingsOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Video_Enhancements]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS, INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_ENHANCEMENTS_OPTIONS, INIConfigNames.INI_VIDEO_ENHANCEMENTS_OPTIONS) + addOtherLinesToBlock(videoEnhancementsOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Video_Hacks]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HACKS_OPTIONS, INIConfigNames.INI_VIDEO_HACKS_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HACKS_OPTIONS, INIConfigNames.INI_VIDEO_HACKS_OPTIONS) + addOtherLinesToBlock(videoHacksOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Video_Hardware]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HARDWARE_OPTION, INIConfigNames.INI_VIDEO_HARDWARE_OPTION);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.VIDEO_HARDWARE_OPTION, INIConfigNames.INI_VIDEO_HARDWARE_OPTION) + addOtherLinesToBlock(videoHardwareOtherLines);
         }
 
         else if (settingBlockHeader.equals("[DSP]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.DSP_AUDIO_OPTION, INIConfigNames.INI_DSP_AUDIO_OPTION);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.DSP_AUDIO_OPTION, INIConfigNames.INI_DSP_AUDIO_OPTION) + addOtherLinesToBlock(dspOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Wii]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.WII_OPTIONS, INIConfigNames.INI_WII_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.WII_OPTIONS, INIConfigNames.INI_WII_OPTIONS) + addOtherLinesToBlock(wiiOtherLines);
         }
 
         else if (settingBlockHeader.equals("[Controls]")) {
-            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CONTROL_OPTIONS, INIConfigNames.INI_CONTROL_OPTIONS);
+            return settingBlockHeader + "\n" + getSettingsBlockInINIForm(settingBlock, ConfigNames.CONTROL_OPTIONS, INIConfigNames.INI_CONTROL_OPTIONS) + addOtherLinesToBlock(controlsOtherLines);
         }
 
         else {
             return "";
         }
 
+    }
+
+    private String addOtherLinesToBlock(ArrayList<String> otherLines) {
+        String otherLinesBlock = "";
+        for (int i=0; i<otherLines.size(); i++) {
+            otherLinesBlock += otherLines.get(i) + "\n";
+        }
+
+        return otherLinesBlock;
     }
 
     private String getSettingsBlockInINIForm(String settingsBlock, String[] options, String[] iniOptions) {
