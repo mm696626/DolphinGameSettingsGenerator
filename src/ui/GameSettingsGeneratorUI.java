@@ -74,7 +74,13 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         this.isEditing = isEditing;
         this.iniFilePath = iniFilePath;
 
-        setTitle("Game Settings INI Generator");
+        if (!isEditing) {
+            setTitle("Game Settings INI Generator");
+        }
+        else {
+            setTitle("Game Settings INI Editor");
+        }
+
         generateUI();
 
         if (isEditing) {
@@ -82,7 +88,15 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
         }
 
         for (int i=0; i<jPanels.size(); i++) {
-            JButton jButton = new JButton("Generate Game Settings INI");
+            String buttonText = "";
+            if (!isEditing) {
+                buttonText = "Generate Game Settings INI";
+            }
+            else {
+                buttonText = "Save Edited Game Settings INI";
+            }
+
+            JButton jButton = new JButton(buttonText);
             generateINIs.add(jButton);
             generateINIs.get(i).addActionListener(this);
             jPanels.get(i).add(generateINIs.get(i));
@@ -107,7 +121,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             if (!tempSettingsFile.delete()) {
                 System.out.println("Temp Settings File was not deleted");
             }
-            JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully generated!");
+
+            if (!isEditing) {
+                JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully generated!");
+            }
+            else {
+                JOptionPane.showMessageDialog(this,  "Game Settings file has been successfully edited!");
+            }
+
             setVisible(false);
         }
     }
