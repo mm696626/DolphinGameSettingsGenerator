@@ -4,6 +4,8 @@ import io.GeneratorSettingsLoader;
 import validation.ExtensionValidator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,6 +56,8 @@ public class GameSettingsEditorUI extends JFrame implements ActionListener {
 
         if (e.getSource() == pickOtherGameSettingsFile) {
             JFileChooser fileChooser = new JFileChooser();
+            FileFilter iniFileFilter = new FileNameExtensionFilter("INI File","ini", "INI");
+            fileChooser.setFileFilter(iniFileFilter);
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int response = fileChooser.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
