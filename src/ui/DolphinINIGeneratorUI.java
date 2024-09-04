@@ -66,7 +66,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         moveGameSettingsToUserFolder.addActionListener(this);
 
         //game settings panel
-        autoMoveUserFolderPathLabel = new JLabel("Auto Move User Folder Path");
+        autoMoveUserFolderPathLabel = new JLabel("User Folder Path");
 
         autoMoveUserFolderPathField = new JTextField(10);
         autoMoveUserFolderPathField.setEditable(false);
@@ -77,7 +77,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         //purely for UI padding so the other options are in the correct spots
         JLabel paddingJLabel = new JLabel("");
 
-        autoMoveEnabledLabel = new JLabel("Auto Move Enabled");
+        autoMoveEnabledLabel = new JLabel("Auto Move to User Folder");
         autoMoveEnabled = new JCheckBox();
 
         useCoverArtLabel = new JLabel("Use Cover Art for Editing INI UI");

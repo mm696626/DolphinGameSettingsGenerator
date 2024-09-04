@@ -6,6 +6,8 @@ import constants.DifferingINIConfigOptions;
 import constants.INIConfigNames;
 import io.GameSettingINISaver;
 import io.GameSettingsSaver;
+import io.GeneratorSettingsLoader;
+import validation.UserFolderValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,6 +52,9 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     private ArrayList<JComboBox> controlJComboBoxes = new ArrayList<>();
     private ArrayList<JTextField> controlJTextFields = new ArrayList<>();
 
+    //if user folder exists, populate these instead of the JTextFields
+    private ArrayList<JComboBox> controlProfileJComboBoxes = new ArrayList<>();
+
     private ArrayList<JButton> generateINIs = new ArrayList<>();
 
     //used only for editing existing INI files
@@ -66,13 +71,16 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
     private ArrayList<String> controlsOtherLines = new ArrayList<>();
     private String[] supportedCategories = {"[Core]", "[Video_Settings]","[Video_Enhancements]", "[Video_Hacks]","[Video_Hardware]","[DSP]","[Wii]","[Controls]"};
 
-
+    private boolean useUserFolder = false;
+    private String userFolderPath = "";
 
     public GameSettingsGeneratorUI(String gameID, boolean isEditing, String iniFilePath)
     {
         this.gameID = gameID;
         this.isEditing = isEditing;
         this.iniFilePath = iniFilePath;
+
+        this.useUserFolder = doesUserFolderExist();
 
         if (!isEditing) {
             setTitle("Game Settings INI Generator");
@@ -101,6 +109,16 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             generateINIs.get(i).addActionListener(this);
             jPanels.get(i).add(generateINIs.get(i));
         }
+    }
+
+    private boolean doesUserFolderExist() {
+        GeneratorSettingsLoader generatorSettingsLoader = new GeneratorSettingsLoader();
+        UserFolderValidator userFolderValidator = new UserFolderValidator();
+        userFolderPath = generatorSettingsLoader.getAutoMovePath();
+
+        File userFolder = new File(userFolderPath);
+
+        return userFolder.exists() && userFolderValidator.isValidUserFolder(userFolderPath);
     }
 
     @Override
@@ -282,6 +300,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
         int textFieldIndex = 0;
         int jComboBoxesAdded = 0;
+        int jComboProfileBoxesAdded = 0;
+
+        //use WiiTDB file to get folder path
+        File tempSettingsFile = new File("wiitdb.txt");
+        String wiiTDBFilePath = tempSettingsFile.getAbsolutePath();
+        int fileNameIndex = wiiTDBFilePath.lastIndexOf("wiitdb.txt");
+        String filePathSeparator = wiiTDBFilePath.substring(fileNameIndex-1, fileNameIndex);
+
 
         for (int i = 0; i<ConfigNames.CONTROL_OPTIONS.length; i++) {
             controlJLabels.add(new JLabel(ConfigNames.CONTROL_OPTIONS[i]));
@@ -292,15 +318,47 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                 jComboBoxesAdded++;
             }
             else {
-                JTextField controlJTextField = new JTextField();
-                controlJTextFields.add(controlJTextField);
-                controlPanel.add(controlJTextFields.get(textFieldIndex));
-                textFieldIndex++;
+
+                if (!useUserFolder) {
+                    JTextField controlJTextField = new JTextField();
+                    controlJTextFields.add(controlJTextField);
+                    controlPanel.add(controlJTextFields.get(textFieldIndex));
+                    textFieldIndex++;
+                }
+                else {
+
+                    String profileFilePath = userFolderPath + filePathSeparator + "Config" + filePathSeparator + "Profiles";
+                    File gcProfiles = new File(profileFilePath + filePathSeparator + "GCPad");
+                    File wiiProfiles = new File(profileFilePath + filePathSeparator + "Wiimote");
+                    JComboBox gcComboBox = new JComboBox(getFileNames(gcProfiles));
+                    JComboBox wiiComboBox = new JComboBox(getFileNames(wiiProfiles));
+
+                    //4 is there because number of controller ports
+                    if (jComboProfileBoxesAdded/4 == 0) {
+                        controlProfileJComboBoxes.add(gcComboBox);
+                        controlPanel.add(controlProfileJComboBoxes.get(jComboProfileBoxesAdded));
+                    }
+                    else {
+                        controlProfileJComboBoxes.add(wiiComboBox);
+                        controlPanel.add(controlProfileJComboBoxes.get(jComboProfileBoxesAdded));
+                    }
+
+                    jComboProfileBoxesAdded++;
+                }
             }
         }
     }
 
+    private String[] getFileNames(File folder) {
+        File[] folderFiles = folder.listFiles();
+        String[] folderFileNames = new String[folderFiles.length];
+        for (int i=0; i<folderFiles.length; i++) {
+            folderFileNames[i] = folderFiles[i].getName();
+            folderFileNames[i] = folderFileNames[i].substring(0, folderFileNames[i].lastIndexOf("."));
+        }
 
+        return folderFileNames;
+    }
 
     private String[] getAppropriateCoreOptions(String coreOption) {
         if (coreOption.equals("Graphics Backend")) {
