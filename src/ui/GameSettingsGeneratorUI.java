@@ -553,7 +553,29 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                     controlJComboBoxes.get(comboBoxIndex).setSelectedIndex(indexToSetTo);
                 }
                 else {
-                    controlJTextFields.get(textFieldIndex).setText(settingValue);
+                    if (!useUserFolder) {
+                        controlJTextFields.get(textFieldIndex).setText(settingValue);
+                    }
+                    else {
+                        File tempSettingsFile = new File("wiitdb.txt");
+                        String wiiTDBFilePath = tempSettingsFile.getAbsolutePath();
+                        int fileNameIndex = wiiTDBFilePath.lastIndexOf("wiitdb.txt");
+                        String filePathSeparator = wiiTDBFilePath.substring(fileNameIndex-1, fileNameIndex);
+
+                        String profileFilePath = userFolderPath + filePathSeparator + "Config" + filePathSeparator + "Profiles";
+                        File gcProfiles = new File(profileFilePath + filePathSeparator + "GCPad");
+                        File wiiProfiles = new File(profileFilePath + filePathSeparator + "Wiimote");
+                        String[] gcProfileStrings = getFileNames(gcProfiles);
+                        String[] wiiProfileStrings = getFileNames(wiiProfiles);
+
+                        //4 is there because number of controller ports
+                        if (textFieldIndex/4 == 0) {
+                            controlProfileJComboBoxes.get(textFieldIndex).setSelectedIndex(getControlProfileJComboBoxIndex(gcProfileStrings, settingValue));
+                        }
+                        else {
+                            controlProfileJComboBoxes.get(textFieldIndex).setSelectedIndex(getControlProfileJComboBoxIndex(wiiProfileStrings, settingValue));
+                        }
+                    }
                 }
             }
 
@@ -564,6 +586,17 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
                 comboBoxIndex++;
             }
         }
+    }
+
+    private int getControlProfileJComboBoxIndex(String[] profileStrings, String settingValue) {
+        int index = 0;
+        for (int i=1; i<profileStrings.length; i++) {
+            if (settingValue.equals(profileStrings[i])) {
+                return i;
+            }
+        }
+
+        return index;
     }
 
     private void setUIElement(ArrayList<JLabel> jLabels, ArrayList<JComboBox> comboBoxes, String translatedINISetting, String settingValue, int i) {

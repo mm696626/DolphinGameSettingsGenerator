@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
-    private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoMoveUserFolderPath;
+    private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoMoveUserFolderPath, resetUserFolder;
     private JLabel useCoverArtLabel, autoMoveEnabledLabel, autoMoveUserFolderPathLabel;
     private JCheckBox useCoverArt, autoMoveEnabled;
     private String userFolderPath = "";
@@ -65,6 +65,9 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         moveGameSettingsToUserFolder = new JButton("Move Game Settings to Dolphin User Folder");
         moveGameSettingsToUserFolder.addActionListener(this);
 
+        resetUserFolder = new JButton("Reset User Folder");
+        resetUserFolder.addActionListener(this);
+
         //game settings panel
         autoMoveUserFolderPathLabel = new JLabel("User Folder Path");
 
@@ -93,6 +96,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         generatorSettingsPanel.add(autoMoveUserFolderPathLabel);
         generatorSettingsPanel.add(autoMoveUserFolderPathField);
         generatorSettingsPanel.add(browseForAutoMoveUserFolderPath);
+        generatorSettingsPanel.add(resetUserFolder);
         generatorSettingsPanel.add(paddingJLabel);
         generatorSettingsPanel.add(autoMoveEnabledLabel);
         generatorSettingsPanel.add(autoMoveEnabled);
@@ -170,6 +174,11 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
             } else {
                 return;
             }
+        }
+
+        if (e.getSource() == resetUserFolder) {
+            autoMoveUserFolderPathField.setText("");
+            updateGeneratorSettings();
         }
     }
 
