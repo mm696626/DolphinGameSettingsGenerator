@@ -128,7 +128,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
             File tempSettingsFile = new File("settings.txt");
 
             GameSettingsSaver gameSettingsSaver = new GameSettingsSaver();
-            gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
+
+            if (!useUserFolder) {
+                gameSettingsSaver.saveGameSettingsToTempFile(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlJTextFields);
+            }
+            else {
+                gameSettingsSaver.saveGameSettingsToTempFileWithUserFolder(coreJComboBoxes, videoSettingsJComboBoxes, videoEnhancementsJComboBoxes, videoHacksJComboBoxes, videoHardwareJComboBox, dspAudioVolumeSlider, wiiJComboBoxes, controlJComboBoxes, controlProfileJComboBoxes);
+            }
+
             GameSettingINISaver gameSettingINISaver = new GameSettingINISaver(gameID);
             try {
                 gameSettingINISaver.saveINI(isEditing, tempSettingsFile, iniFilePath, otherLines, coreOtherLines, videoSettingsOtherLines, videoEnhancementsOtherLines, videoHacksOtherLines, videoHardwareOtherLines, dspOtherLines, wiiOtherLines, controlsOtherLines);
@@ -351,10 +358,11 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private String[] getFileNames(File folder) {
         File[] folderFiles = folder.listFiles();
-        String[] folderFileNames = new String[folderFiles.length];
+        String[] folderFileNames = new String[folderFiles.length + 1];
+        folderFileNames[0] = "None";
         for (int i=0; i<folderFiles.length; i++) {
-            folderFileNames[i] = folderFiles[i].getName();
-            folderFileNames[i] = folderFileNames[i].substring(0, folderFileNames[i].lastIndexOf("."));
+            folderFileNames[i+1] = folderFiles[i].getName();
+            folderFileNames[i+1] = folderFileNames[i+1].substring(0, folderFileNames[i+1].lastIndexOf("."));
         }
 
         return folderFileNames;
