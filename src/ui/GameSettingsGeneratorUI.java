@@ -358,6 +358,14 @@ public class GameSettingsGeneratorUI extends JFrame implements ActionListener {
 
     private String[] getFileNames(File folder) {
         File[] folderFiles = folder.listFiles();
+
+        //in the event the folder doesn't exist, just return an array with "None" in it
+        if (folderFiles == null) {
+            String[] nullArr = new String[1];
+            nullArr[0] = "None";
+            return nullArr;
+        }
+
         String[] folderFileNames = new String[folderFiles.length + 1];
         folderFileNames[0] = "None";
         for (int i=0; i<folderFiles.length; i++) {
