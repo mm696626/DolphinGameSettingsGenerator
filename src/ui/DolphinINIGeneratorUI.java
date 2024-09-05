@@ -21,8 +21,8 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
 
 
     private JButton pickGame, editINI, moveGameSettingsToUserFolder, browseForAutoMoveUserFolderPath, resetUserFolder;
-    private JLabel useCoverArtLabel, autoMoveEnabledLabel, autoMoveUserFolderPathLabel;
-    private JCheckBox useCoverArt, autoMoveEnabled;
+    private JLabel useCoverArtLabel, autoMoveUserFolderPathLabel;
+    private JCheckBox useCoverArt;
     private String userFolderPath = "";
     private String autoMoveUserFolderPath = "";
     private JTextField autoMoveUserFolderPathField;
@@ -80,13 +80,9 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         //purely for UI padding so the other options are in the correct spots
         JLabel paddingJLabel = new JLabel("");
 
-        autoMoveEnabledLabel = new JLabel("Auto Move to User Folder");
-        autoMoveEnabled = new JCheckBox();
-
         useCoverArtLabel = new JLabel("Use Cover Art for Editing INI UI");
         useCoverArt = new JCheckBox();
 
-        autoMoveEnabled.addActionListener (e -> updateGeneratorSettings());
         useCoverArt.addActionListener (e -> updateGeneratorSettings());
 
         mainMenuPanel.add(pickGame);
@@ -98,8 +94,6 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         generatorSettingsPanel.add(browseForAutoMoveUserFolderPath);
         generatorSettingsPanel.add(resetUserFolder);
         generatorSettingsPanel.add(paddingJLabel);
-        generatorSettingsPanel.add(autoMoveEnabledLabel);
-        generatorSettingsPanel.add(autoMoveEnabled);
         generatorSettingsPanel.add(useCoverArtLabel);
         generatorSettingsPanel.add(useCoverArt);
 
@@ -194,7 +188,6 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         }
 
         outputStream.println(GeneratorSettings.AUTO_MOVE_PATH + "=" + autoMoveUserFolderPathField.getText().trim());
-        outputStream.println(GeneratorSettings.AUTO_MOVE_ENABLED + "=" + autoMoveEnabled.isSelected());
         outputStream.println(GeneratorSettings.USE_COVER_ART + "=" + useCoverArt.isSelected());
         outputStream.close();
     }
@@ -210,12 +203,7 @@ public class DolphinINIGeneratorUI extends JFrame implements ActionListener {
         while (inputStream.hasNextLine()) {
             String line = inputStream.nextLine();
 
-            if (line.contains(GeneratorSettings.AUTO_MOVE_ENABLED)) {
-                String settingValue = line.split("=")[1];
-                autoMoveEnabled.setSelected(Boolean.parseBoolean(settingValue));
-            }
-
-            else if (line.contains(GeneratorSettings.AUTO_MOVE_PATH)) {
+            if (line.contains(GeneratorSettings.AUTO_MOVE_PATH)) {
                 String[] lineParts = line.split("=");
                 if (lineParts.length > 1) {
                     autoMoveUserFolderPathField.setText(lineParts[1]);

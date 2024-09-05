@@ -8,28 +8,6 @@ import java.util.Scanner;
 
 public class GeneratorSettingsLoader {
 
-    public boolean getAutoMoveEnabled() {
-        Scanner inputStream = null;
-        try {
-            inputStream = new Scanner(new FileInputStream("generatorSettings.txt"));
-        } catch (FileNotFoundException e) {
-            return false;
-        }
-
-        while (inputStream.hasNextLine()) {
-            String line = inputStream.nextLine();
-
-            if (line.contains(GeneratorSettings.AUTO_MOVE_ENABLED)) {
-                String settingValue = line.split("=")[1];
-                inputStream.close();
-                return Boolean.parseBoolean(settingValue);
-            }
-        }
-
-        inputStream.close();
-        return false;
-    }
-
     public String getAutoMovePath() {
         Scanner inputStream = null;
         try {

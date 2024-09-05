@@ -38,7 +38,7 @@ public class GameSettingsMover {
                 String gameID = settingFilePath.substring(settingFilePath.lastIndexOf(filePathSeparator)+1, settingFilePath.lastIndexOf("."));
                 String copiedSettingFilePath = userFolderPath + filePathSeparator + "GameSettings" + filePathSeparator + gameID + fileExtension;
                 File copiedSettingsFile = new File(copiedSettingFilePath);
-                Files.move(settingsFiles[0].toPath(), copiedSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.move(settingsFiles[i].toPath(), copiedSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
         }
     }
